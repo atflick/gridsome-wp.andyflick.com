@@ -37,7 +37,7 @@ module.exports = function (api) {
       });
 
       menuContentType.addNode({
-        id: menu.data.id,
+        id: menu.data.ID,
         name: menu.data.name,
         items: [
           ...menuItems

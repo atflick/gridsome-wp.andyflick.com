@@ -5,6 +5,7 @@
         <g-link to="/">{{ $static.metadata.siteName }}</g-link>
       </strong>
       <nav class="nav">
+        <Header/>
         <g-link class="nav__link" to="/">Home</g-link>
         <g-link class="nav__link" to="/about/">About</g-link>
       </nav>
@@ -20,6 +21,16 @@ query {
   }
 }
 </static-query>
+<script>
+import Header from '~/components/Header.vue'
+
+export default {
+  components: {
+    Header
+  }
+}
+
+</script>
 
 <style>
 body {
