@@ -48,7 +48,34 @@ module.exports = function (api) {
 
   })
 
-  api.createPages(({ createPage }) => {
-    // Use the Pages API here: https://gridsome.org/docs/pages-api/
-  })
+  api.createPages(async store => {
+    console.log(store);
+    const pages = await axios.get(`${wpUrl}/wp-json/wp/v2/pages`);
+    console.log(pages);
+
+    for (page of pages.data) {
+      const path = page.link.replace(wpUrl, ''),
+            template = page.template === '' ? 'Default' :  convertTemplate(page.template);
+
+      store.createPage({
+        path,
+        component: `./src/templates/${template}.vue`,
+        context: {
+          id: page.id
+        }
+      });
+    }
+  });
+
+  function convertTemplate(path) {
+    const regex = /(?<=template-)(.*)(?=.php)/g,
+          found = path.match(regex),
+          nameSplit = found[0].split('-');
+
+    return nameSplit.reduce((accum, next) => {
+      const str = next.toLowerCase(),
+            pascal = str.charAt(0).toUpperCase() + str.slice(1);
+      return accum + pascal;
+    });
+  }
 }
