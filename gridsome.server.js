@@ -18,15 +18,16 @@ module.exports = function (api) {
       const menuItems = menu.data.items.map((item) => {
 
         const itemObject = {
+          id: item.id,
           title: item.title,
           url: item.url.replace(wpUrl, ''),
-          sasd: wpUrl,
           children: []
         }
 
         if (item.children) {
           itemObject['children'] = item.children.map((child) => {
             return {
+              id: child.id,
               title: child.title,
               url: child.url.replace(wpUrl, '')
             }
