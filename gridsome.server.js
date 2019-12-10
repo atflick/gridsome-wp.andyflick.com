@@ -9,6 +9,10 @@ const wpUrl = process.env.WORDPRESS_URL;
 
 module.exports = function (api) {
   api.loadSource(async store => {
+
+    /**
+     * Menus
+     */
     const menuIds = [2];
     const menuContentType = store.addCollection('Menu');
 
@@ -46,12 +50,16 @@ module.exports = function (api) {
       })
     }
 
-  })
+    /**
+     * Pages
+     */
+    // const pageContentType = store.addCollection('Page');
+
+
+  });
 
   api.createPages(async store => {
-    console.log(store);
     const pages = await axios.get(`${wpUrl}/wp-json/wp/v2/pages`);
-    console.log(pages);
 
     for (page of pages.data) {
       const path = page.link.replace(wpUrl, ''),
@@ -61,7 +69,12 @@ module.exports = function (api) {
         path,
         component: `./src/templates/${template}.vue`,
         context: {
-          id: page.id
+          id: page.id,
+          title: page.title.rendered,
+          fields: {
+            ...page.acf
+          }
+
         }
       });
     }
@@ -71,11 +84,17 @@ module.exports = function (api) {
     const regex = /(?<=template-)(.*)(?=.php)/g,
           found = path.match(regex),
           nameSplit = found[0].split('-');
+    if (nameSplit.length > 1) {
+      return nameSplit.reduce((accum, next) => {
+        return accum + capitalizeString(next);
+      });
+    } else {
+      return capitalizeString(nameSplit[0]);
+    }
+  }
 
-    return nameSplit.reduce((accum, next) => {
-      const str = next.toLowerCase(),
-            pascal = str.charAt(0).toUpperCase() + str.slice(1);
-      return accum + pascal;
-    });
+  function capitalizeString(str) {
+    str = str.toLowerCase();
+    return str.charAt(0).toUpperCase() + str.slice(1)
   }
 }
