@@ -18,3 +18,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+h1 {
+  /* color: $red; */
+
+  @include from(5) {
+    background: red;
+  }
+}
+</style>

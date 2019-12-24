@@ -3,6 +3,7 @@
 
 import DefaultLayout from '~/layouts/Default.vue'
 import { upperFirst, camelCase } from 'lodash'
+import '~/assets/css/style.scss'
 
 const requireComponent = require.context(
   // The relative path of the components folder
