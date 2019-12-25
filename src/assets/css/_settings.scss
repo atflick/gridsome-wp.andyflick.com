@@ -7,13 +7,13 @@
 $slicer-breakpoints: 100px 200px 320px 400px 500px 600px 768px 800px 900px 1000px 1100px 1200px 1300px 1400px 1500px 1600px 1700px 1800px;
 $slicer-anti-overlap-corrections: -1px;
 
-$noto-serif: 'Noto Serif', serif;
-$open-sans: 'Open Sans', sans-serif;
+$overpass-mono: 'Overpass Mono', monospace;
+$overpass-sans: 'Overpass', sans-serif;
 
 $body-color: primary-color(black);
-$body-font: $open-sans;
-$header-color: primary-color(black);
-$header-font: $open-sans;
+$body-font: $overpass-mono;
+$header-color: primary-color(gray);
+$header-font: $overpass-sans;
 $link-color: primary-color(black);
 $hr-color: primary-color(black);
 
@@ -27,3 +27,5 @@ $max-width: 1100px;
 // transitions
 $ts: .25s; // transition speed
 $te: ease-in-out; // transition ease
+
+$shadow: 1px 1px 4px rgba(#000, .2);

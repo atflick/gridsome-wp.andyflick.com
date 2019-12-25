@@ -28,12 +28,22 @@ h5,
 h6 {
   color: $header-color;
   font-family: $header-font;
-  @include font-weight(medium);
+  @include font-weight(black);
   margin: 0 0 20px;
   transition: font-size $ts $te;
 
   a {
     text-decoration: none;
+  }
+
+  &.-blue-bg {
+    display: inline;
+    box-shadow: inset 0 -14px rgba(primary-color(blue), .3);
+  }
+
+  &.-red-bg {
+    display: inline;
+    box-shadow: inset 0 -14px rgba(primary-color(red), .3);
   }
 }
 

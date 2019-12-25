@@ -4,8 +4,8 @@
     margin-bottom: $margin / 2;
     margin-top: $margin / 2;
   }
-  padding-left: $padding / 2;
-  padding-right: $padding / 2;
+  padding-left: $padding / 3;
+  padding-right: $padding / 3;
 
   @include from(9) {
     @if $margin != 0 {

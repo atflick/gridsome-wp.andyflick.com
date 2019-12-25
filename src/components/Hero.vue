@@ -1,7 +1,11 @@
 <template>
   <div class="hero" :style="{ backgroundImage: `url(${image})`}">
-    <h1>{{ title }}</h1>
-    <p>{{ text }}</p>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h1 class="-blue-bg">{{ title }}</h1>
+        <p>{{ text }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,11 +24,31 @@ export default {
 </script>
 
 <style lang="scss">
-h1 {
-  /* color: $red; */
+  .hero {
+    position: relative;
+    @include content-constraint($margin: 0, $inner-padding: true);
+    min-height: 300px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
-  @include from(5) {
-    background: red;
+    @include bg-pattern;
+
+    &-content {
+      max-width: 450px;
+      position: relative;
+      z-index: 2;
+      color: primary-color(white);
+
+      h1 {
+        display: inline;
+        color: primary-color(white);
+      }
+
+      p {
+        margin-top: 30px;
+        max-width: 400px;
+      }
+    }
   }
-}
 </style>

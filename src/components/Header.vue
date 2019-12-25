@@ -1,36 +1,29 @@
 <template>
-  <ul>
-    <li v-for="item in $static.menu.items" :key="item.id">
-      <g-link :to="item.url">{{ item.title }}</g-link>
-      <ul v-if="item.children.length">
-        <li v-for="child in item.children" :key="child.id">
-          <g-link :to="child.url">{{ child.title }}</g-link>
-        </li>
-      </ul>
-    </li>
-  </ul>
+  <header class="site-header">
+    <div class="site-header-logo">Logo</div>
+    <nav class="site-header-nav">
+      <PrimaryNav/>
+    </nav>
+  </header>
 </template>
-
-<static-query>
-  query {
-    menu: menu(id: "2") {
-      id
-      items {
-        id
-        title
-        url
-        children {
-          id
-          title
-          url
-        }
-      }
-    }
-  }
-</static-query>
 
 <script>
 export default {
 
 }
 </script>
+
+<style lang="scss">
+  .site-header {
+    @include content-constraint($max-width, $margin: 0, $inner-padding: false);
+    display: flex;
+    justify-content: space-between;
+
+    &-logo {
+      padding: 8px 0;
+      font-family: $header-font;
+      @include font-weight(black);
+      @include rem(font-size, 28px);
+    }
+  }
+</style>

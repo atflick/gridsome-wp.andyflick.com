@@ -13,9 +13,10 @@ function addStyleResource (rule) {
 
         // importing global scss
         path.resolve(__dirname, './src/assets/css/vendor/_vendor.scss'),
-        path.resolve(__dirname, './src/assets/sass/mixins/**/*.scss'),
-        path.resolve(__dirname, './src/assets/sass/functions/**/*.scss'),
-        // path.resolve(__dirname, './src/assets/css/style.scss'),
+        path.resolve(__dirname, './src/assets/css/helpers/mixins/**/*.scss'),
+        path.resolve(__dirname, './src/assets/css/helpers/functions/**/*.scss'),
+        path.resolve(__dirname, './src/assets/css/_colors.scss'),
+        path.resolve(__dirname, './src/assets/css/_settings.scss'),
       ],
     })
 }
