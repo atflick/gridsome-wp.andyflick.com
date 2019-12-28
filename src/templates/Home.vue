@@ -1,8 +1,6 @@
 <template>
   <Layout>
-    <h1>{{ $context.title }}</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error doloremque omnis animi, eligendi magni a voluptatum, vitae, consequuntur rerum illum odit fugit assumenda rem dolores inventore iste reprehenderit maxime! Iusto.</p>
-    <Test/>
+    <HomeHero :fields="homeHero" />
   </Layout>
 </template>
 
@@ -10,6 +8,13 @@
 export default {
   metaInfo: {
     title: 'About us'
+  },
+  computed: {
+    homeHero() {
+      if (this.$context.fields.home_hero) {
+        return this.$context.fields.home_hero;
+      }
+    }
   }
 }
 </script>

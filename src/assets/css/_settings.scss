@@ -9,11 +9,12 @@ $slicer-anti-overlap-corrections: -1px;
 
 $overpass-mono: 'Overpass Mono', monospace;
 $overpass-sans: 'Overpass', sans-serif;
+$lalezar: 'Lalezar', sans-serif;
 
 $body-color: primary-color(black);
 $body-font: $overpass-mono;
 $header-color: primary-color(gray);
-$header-font: $overpass-sans;
+$header-font: $lalezar;
 $link-color: primary-color(black);
 $hr-color: primary-color(black);
 

@@ -74,7 +74,6 @@ module.exports = function (api) {
           fields: {
             ...page.acf
           }
-
         }
       });
     }

@@ -57,14 +57,14 @@ export default {
 
     &-link {
       padding: 12px 15px;
-      background: primary-color(white);
       transition: $te $ts;
       border-bottom: 4px solid transparent;
+      box-shadow: inset 0 0 transparent;
 
       @include hover {
-        background: primary-color(gray);
         color: primary-color(white);
         border-color: primary-color(blue);
+        box-shadow: inset 0 50px primary-color(gray);
       }
     }
 
@@ -72,7 +72,7 @@ export default {
       position: absolute;
       left: 0;
       top: calc(100% - 4px);
-      padding: 10px 15px;
+      visibility: hidden;
       background: primary-color(white);
       box-shadow: $shadow;
       transition: $te $ts;
@@ -81,6 +81,18 @@ export default {
 
       &-list {
         @include kill-bullets;
+
+        &-link {
+          padding: 10px 15px;
+          text-decoration: none;
+          box-shadow: inset 0 0 transparent;
+          border: 0;
+
+          @include hover {
+            color: primary-color(white);
+            box-shadow: inset 0 50px primary-color(gray);
+          }
+        }
       }
     }
   }

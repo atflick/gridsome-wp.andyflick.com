@@ -1,6 +1,10 @@
 <template>
   <header class="site-header">
-    <div class="site-header-logo">Logo</div>
+    <div class="site-header-logo">
+      <g-link to="/">
+        <img src="../assets/images/logo-af-dark.svg" alt="AF Logo">
+      </g-link>
+    </div>
     <nav class="site-header-nav">
       <PrimaryNav/>
     </nav>
@@ -15,15 +19,24 @@ export default {
 
 <style lang="scss">
   .site-header {
+    position: relative;
+    z-index: 5;
     @include content-constraint($max-width, $margin: 0, $inner-padding: false);
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
 
     &-logo {
-      padding: 8px 0;
-      font-family: $header-font;
-      @include font-weight(black);
-      @include rem(font-size, 28px);
+      padding: 5px 0;
+      width: 60px;
+
+      > a {
+        border: 0;
+      }
+
+      img {
+        width: 100%;
+      }
     }
   }
 </style>

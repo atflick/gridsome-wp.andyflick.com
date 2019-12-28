@@ -1,9 +1,9 @@
 <template>
-  <div class="hero" :style="{ backgroundImage: `url(${image})`}">
+  <div class="hero" :style="{ backgroundImage: `url(${fields.image})`}">
     <div class="hero-inner">
       <div class="hero-content">
-        <h1 class="-blue-bg">{{ title }}</h1>
-        <p>{{ text }}</p>
+        <h1 class="-blue-bg">{{ fields.title }}</h1>
+        <p>{{ fields.text }}</p>
       </div>
     </div>
   </div>
@@ -12,12 +12,13 @@
 
 <script>
 export default {
-  data() {
-    return {
-      title: this.$attrs.fields.title,
-      text: this.$attrs.fields.text,
-      image: this.$attrs.fields.image.url
-
+  computed: {
+    fields() {
+      return {
+        title: this.$attrs.fields.title,
+        text: this.$attrs.fields.text,
+        image: this.$attrs.fields.image.url
+      }
     }
   }
 }

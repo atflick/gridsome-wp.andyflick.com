@@ -3,12 +3,12 @@
     <div class="fifty-fifty-inner">
       <div class="fifty-fifty-content">
         <div class="fifty-fifty-content-inner">
-          <h2 class="-red-bg">{{ title }}</h2>
-          <p class="fifty-fifty-content-text">{{ text }}</p>
+          <h2 class="-red-bg">{{ fields.title }}</h2>
+          <p class="fifty-fifty-content-text">{{ fields.text }}</p>
         </div>
       </div>
       <div class="fifty-fifty-image">
-        <img :src="image.url" :alt="image.alt">
+        <img :src="fields.image.url" :alt="fields.image.alt">
       </div>
     </div>
   </div>
@@ -17,18 +17,20 @@
 
 <script>
 export default {
-  data() {
-    return {
-      title: this.$attrs.fields.title,
-      text: this.$attrs.fields.text,
-      image: {
-        url: this.$attrs.fields.image.url,
-        alt: this.$attrs.fields.image.alt
-      },
-      link: {
-        title: this.$attrs.fields.link.title,
-        url: this.$attrs.fields.link.url,
-        target: this.$attrs.fields.link.target
+  computed: {
+    fields() {
+      return {
+        title: this.$attrs.fields.title,
+        text: this.$attrs.fields.text,
+        image: {
+          url: this.$attrs.fields.image.url,
+          alt: this.$attrs.fields.image.alt
+        },
+        link: {
+          title: this.$attrs.fields.link.title,
+          url: this.$attrs.fields.link.url,
+          target: this.$attrs.fields.link.target
+        }
       }
     }
   }
