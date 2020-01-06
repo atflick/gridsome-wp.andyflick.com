@@ -15,7 +15,7 @@
 
 <static-query>
   query {
-    menu: menu(id: "2") {
+    menu: wordPressMenu(id: "2") {
       id
       items {
         id
