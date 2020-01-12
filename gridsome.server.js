@@ -10,6 +10,7 @@ module.exports = function (api) {
 
   const WP = new WPSource(api, {
     baseUrl: wpUrl,
+    postTypes: ['post', 'team'],
     menuIds: [2]
   });
 

@@ -14,7 +14,7 @@ class WPSource {
       typeName: options.typeName || 'WordPress',
       menuIds: options.menuIds || [],
       menuTypeName: options.menuTypeName || 'Menu',
-      postTypes: options.postTypes || ['posts']
+      postTypes: options.postTypes || ['post']
     }
 
     this.routes = this.options.routes || {};
@@ -39,6 +39,8 @@ class WPSource {
         await this.getMenus(actions);
 
       // await this.getPostTypes(actions);
+      await this.getTaxonomies(actions);
+      await this.getTypes(actions);
       await this.getPosts(actions);
 
     });
@@ -107,32 +109,123 @@ class WPSource {
     }
   }
 
-  async getPosts(actions) {
-    for (const postType of this.options.postTypes) {
-      const postCollection = actions.addCollection(postType);
-      const { data } = await this.fetch(`/wp/v2/${postType}`);
+  async getTaxonomies(actions) {
+    console.log('Getting taxonomies...');
+    const { data } = await this.fetch('/wp/v2/taxonomies');
+    // console.log(data);
+    for (let taxonomy in data) {
+      taxonomy = data[taxonomy];
 
-      this.restBases.posts[postType] = {
-        base: postType,
-        data
+      const taxName = this.pascalCase(taxonomy.name)
+
+      actions.addCollection(taxName)
+
+      this.restBases.taxonomies[taxonomy.slug] = {
+        base: taxonomy.rest_base,
+        collection: taxName,
+        types: taxonomy.types
       };
 
-      for (const post of data) {
-        // const path = post.link.replace(this.options.baseUrl, '');
+      // for (const type of taxonomy.types) {
+      //   if (!(this.restBases.posts.hasOwnProperty(type))) {
+      //     this.restBases.posts[type] = {
+      //       taxonomies: {}
+      //     };
+      //   }
+      //   this.restBases.posts[type].taxonomies[taxonomy.rest_base] = taxName;
+      // }
+    }
 
-        postCollection.addNode({
+    for (let taxonomy in this.restBases.taxonomies) {
+      taxonomy = this.restBases.taxonomies[taxonomy];
+
+      const response = await this.fetch(`/wp/v2/${taxonomy.base}`)
+      if (response.data.length) {
+        const taxCollection = actions.getCollection(taxonomy.collection)
+        for (const term of response.data) {
+          taxCollection.addNode({
+            id: term.id,
+            title: term.name,
+            slug: term.slug,
+            path: `/${taxonomy}/${term.slug}`
+          });
+        }
+      }
+    }
+  }
+
+  async getTypes(actions) {
+    console.log('Getting types...');
+
+    const { data } = await this.fetch('/wp/v2/types');
+    for (const postType of this.options.postTypes) {
+      const typeData = data[postType];
+      const typeCollectionName = this.pascalCase(typeData.name)
+      actions.addCollection(typeCollectionName)
+
+      if (!(this.restBases.posts.hasOwnProperty(postType))) {
+        this.restBases.posts[postType] = {};
+      }
+
+      this.restBases.posts[postType].base = typeData.rest_base;
+      this.restBases.posts[postType].taxonomies = typeData.taxonomies;
+      this.restBases.posts[postType].name = typeData.name;
+      this.restBases.posts[postType].collection = typeCollectionName;
+    }
+  }
+
+  async getPosts(actions) {
+    console.log('Getting posts...');
+
+    for (let postType in this.restBases.posts) {
+      postType = this.restBases.posts[postType]
+      const postCollection = actions.getCollection(postType.collection);
+
+
+      const { data } = await this.fetch(`/wp/v2/${postType.base}`);
+
+      postType.data = data;
+
+      const taxonomies = [];
+
+      if (postType.hasOwnProperty('taxonomies')) {
+
+        for (let taxonomy of postType.taxonomies) {
+          taxonomy = this.restBases.taxonomies[taxonomy];
+          console.log(taxonomy);
+
+          postCollection.addReference(taxonomy.base, taxonomy.collection);
+          taxonomies.push(taxonomy.base);
+        }
+      }
+
+      for (const post of data) {
+        // console.log(post);
+
+        const url = post.link.replace(this.options.baseUrl, '');
+        const postData = {
           id: post.id,
           date: post.date,
           title: post.title.rendered,
-          // path
-        });
+          url,
+          acf: {
+            ...post.acf
+          }
+        }
+
+        for (const taxonomy of taxonomies) {
+          postData[taxonomy] = post[taxonomy];
+        }
+        console.log(postData);
+
+        postCollection.addNode(postData);
       }
     }
   }
 
   createPostPages(actions) {
     for (const postType of this.options.postTypes) {
-      console.log(postType);
+      // console.log(postType);
 
       for (const post of this.restBases.posts[postType].data) {
         const path = post.link.replace(this.options.baseUrl, ''),
@@ -140,7 +233,7 @@ class WPSource {
 
         actions.createPage({
           path,
-          component: `./src/templates/${template}.vue`,
+          component: `./src/templates/single/${template}.vue`,
           context: {
             id: post.id,
             title: post.title.rendered,
@@ -207,16 +300,20 @@ class WPSource {
 
     if (nameSplit.length > 1) {
       return nameSplit.reduce((accum, next) => {
-        return accum + this.capitalizeString(next);
+        return accum + upperFirst(next);
       });
     } else {
-      return this.capitalizeString(nameSplit[0]);
+      return upperFirst(nameSplit[0]);
     }
+  }
+
+  pascalCase(str) {
+    return upperFirst(camelCase(str));
   }
 
   capitalizeString(str) {
     str = str.toLowerCase();
-    return str.charAt(0).toUpperCase() + str.slice(1)
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }
 
