@@ -21,16 +21,23 @@
 //
 // Styleguide Typography.Headers
 h1,
+.h1,
 h2,
+.h2,
 h3,
+.h3,
 h4,
+.h4,
 h5,
-h6 {
+.h5,
+h6,
+.h6 {
   color: $header-color;
   font-family: $header-font;
-  @include font-weight(black);
+  @include font-weight(normal);
   margin: 0 0 20px;
   transition: font-size $ts $te;
+  // letter-spacing: .5px;
 
   a {
     text-decoration: none;
@@ -47,30 +54,37 @@ h6 {
   }
 }
 
+.h1,
 h1 {
   @include rem(font-size, 40px);
+  @include font-weight(bold);
 
   @include from(10) {
     @include rem(font-size, 46px);
   }
 }
 
+.h2,
 h2 {
   @include rem(font-size, 36px);
+  @include font-weight(bold);
 
   @include from(10) {
     @include rem(font-size, 40px);
   }
 }
 
+.h3,
 h3 {
   @include rem(font-size, 26px);
+  line-height: 1.1;
 
   @include from(10) {
     @include rem(font-size, 32px);
   }
 }
 
+.h4,
 h4 {
   @include rem(font-size, 22px);
 
@@ -79,10 +93,12 @@ h4 {
   }
 }
 
+.h5,
 h5 {
   @include rem(font-size, 20px);
 }
 
+.h6,
 h6 {
   @include rem(font-size, 18px);
 }

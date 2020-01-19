@@ -1,5 +1,5 @@
 <template>
-  <div class="hero" :style="{ backgroundImage: `url(${fields.image})`}">
+  <div class="hero" :style="{ backgroundImage: `url(${fields.image.url})`}">
     <div class="hero-inner">
       <div class="hero-content">
         <h1 class="-blue-bg">{{ fields.title }}</h1>
@@ -12,14 +12,8 @@
 
 <script>
 export default {
-  computed: {
-    fields() {
-      return {
-        title: this.$attrs.fields.title,
-        text: this.$attrs.fields.text,
-        image: this.$attrs.fields.image.url
-      }
-    }
+  props: {
+    fields: Object
   }
 }
 </script>

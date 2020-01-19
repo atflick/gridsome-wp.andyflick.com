@@ -180,28 +180,19 @@ class WPSource {
     for (let postType in this.restBases.posts) {
       postType = this.restBases.posts[postType]
       const postCollection = actions.getCollection(postType.collection);
-
-
       const { data } = await this.fetch(`/wp/v2/${postType.base}`);
-
       postType.data = data;
-
       const taxonomies = [];
 
       if (postType.hasOwnProperty('taxonomies')) {
-
         for (let taxonomy of postType.taxonomies) {
           taxonomy = this.restBases.taxonomies[taxonomy];
-          console.log(taxonomy);
-
           postCollection.addReference(taxonomy.base, taxonomy.collection);
           taxonomies.push(taxonomy.base);
         }
       }
 
       for (const post of data) {
-        // console.log(post);
-
         const url = post.link.replace(this.options.baseUrl, '');
         const postData = {
           id: post.id,
@@ -216,7 +207,6 @@ class WPSource {
         for (const taxonomy of taxonomies) {
           postData[taxonomy] = post[taxonomy];
         }
-        console.log(postData);
 
         postCollection.addNode(postData);
       }
@@ -225,7 +215,6 @@ class WPSource {
 
   createPostPages(actions) {
     for (const postType of this.options.postTypes) {
-      // console.log(postType);
 
       for (const post of this.restBases.posts[postType].data) {
         const path = post.link.replace(this.options.baseUrl, ''),
@@ -243,27 +232,8 @@ class WPSource {
           }
         });
       }
-
     }
   }
-
-  // async getPostTypes(actions) {
-  //   const { data } = await this.fetch(`/wp/v2/types`);
-  //   const addCollection = actions.addCollection || actions.addContentType
-  //   console.log(data);
-
-  //   for (const type in data) {
-  //     const options = data[type]
-
-  //     this.restBases.posts[type] = trimStart(options.rest_base, '/')
-
-  //     addCollection({
-  //       typeName: this.createTypeName(type),
-  //       route: this.routes[type]
-  //     });
-  //   }
-  // };
-
 
   async fetch (url, params = {}, fallbackData = []) {
     let res

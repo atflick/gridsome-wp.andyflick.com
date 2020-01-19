@@ -1,10 +1,10 @@
 <template>
-  <div class="home-hero" :style="{ backgroundImage: `url(${image})`}">
+  <div class="home-hero" :style="{ backgroundImage: `url(${fields.image.url})`}">
     <div class="home-hero-flash"></div>
     <div class="home-hero-inner">
       <div class="home-hero-content">
-        <h1 class="-blue-bg">{{ title }}</h1>
-        <p>{{ text }}</p>
+        <h1 class="-blue-bg">{{ fields.title }}</h1>
+        <p>{{ fields.text }}</p>
       </div>
     </div>
   </div>
@@ -13,13 +13,8 @@
 
 <script>
 export default {
-  data() {
-    return {
-      title: this.$attrs.fields.title,
-      text: this.$attrs.fields.text,
-      image: this.$attrs.fields.image.url
-
-    }
+  props: {
+    fields: Object
   }
 }
 </script>

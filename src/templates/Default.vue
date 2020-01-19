@@ -9,22 +9,15 @@ export default {
   metaInfo: {
     title: 'About us'
   },
-  data() {
-    return {
-      // components: this.$context.fields.components
-    }
-  },
   computed: {
     components() {
       if (this.$context.fields.components) {
         return this.$context.fields.components.map((component) => {
-          console.log(component);
           component.componentName = component.acf_fc_layout.replace(/_/g, '-');
           return component;
         });
       }
     }
-
   }
 }
 </script>

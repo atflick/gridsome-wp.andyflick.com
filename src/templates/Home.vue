@@ -1,6 +1,7 @@
 <template>
   <Layout>
     <HomeHero :fields="homeHero" />
+    <RecentPosts />
   </Layout>
 </template>
 
