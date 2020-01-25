@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <h1>Post</h1>
+    <Hero :fields="heroFields" />
   </Layout>
 </template>
 
@@ -10,7 +10,15 @@ export default {
     title: 'About us'
   },
   computed: {
-
+    heroFields() {
+      return {
+        title: this.$context.title,
+        image: {
+          url: this.$context.fields.insights_fields.hero_image.url
+        },
+        text: this.$context.fields.insights_fields.intro_text
+      }
+    }
   }
 }
 </script>

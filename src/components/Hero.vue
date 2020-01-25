@@ -3,7 +3,7 @@
     <div class="hero-inner">
       <div class="hero-content">
         <h1 class="-blue-bg">{{ fields.title }}</h1>
-        <p>{{ fields.text }}</p>
+        <p :v-if="fields.text">{{ fields.text }}</p>
       </div>
     </div>
   </div>
