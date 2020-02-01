@@ -59,12 +59,24 @@ export default {
       padding: 12px 15px;
       transition: $te $ts;
       border-bottom: 4px solid transparent;
-      box-shadow: inset 0 0 transparent;
+      @include rem(font-size, 18px);
+
+      &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 6px;
+        width: 0;
+        background-image: $blue-mid;
+        transition: $te $ts;
+      }
 
       @include hover {
-        color: primary-color(white);
-        border-color: primary-color(blue);
-        box-shadow: inset 0 50px primary-color(gray);
+        &::before {
+          width: 100%;
+        }
       }
     }
 
@@ -85,12 +97,12 @@ export default {
         &-link {
           padding: 10px 15px;
           text-decoration: none;
-          box-shadow: inset 0 0 transparent;
+          border-bottom: 4px solid transparent;
           border: 0;
 
+
           @include hover {
-            color: primary-color(white);
-            box-shadow: inset 0 50px primary-color(gray);
+            border-color: primary-color(blue);
           }
         }
       }

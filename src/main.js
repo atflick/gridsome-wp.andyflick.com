@@ -14,10 +14,12 @@ const requireComponent = require.context(
   /[A-Z]\w+\.(vue|js)$/
 )
 
-export default function (Vue, { router, head, isClient }) {
-  // Set default layout as a global component
-  Vue.component('Layout', DefaultLayout)
+export default function (Vue, { appOptions, router, head, isClient }) {
 
+  appOptions.render = h => h(DefaultLayout, { attrs: { id: 'app' } })
+
+  // Set default layout as a global component
+  // Vue.component('Layout', DefaultLayout)
   requireComponent.keys().forEach(fileName => {
     // Get component config
     const componentConfig = requireComponent(fileName)

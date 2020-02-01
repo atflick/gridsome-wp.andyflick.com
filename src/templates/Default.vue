@@ -1,7 +1,7 @@
 <template>
-  <Layout>
+  <div :key="$context.id">
     <component v-for="(component, index) in components" :key="index" :is="component.componentName" :fields="component"></component>
-  </Layout>
+  </div>
 </template>
 
 <script>

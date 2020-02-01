@@ -1,8 +1,8 @@
 <template>
-  <Layout>
+  <div>
     <HomeHero :fields="homeHero" />
     <RecentPosts />
-  </Layout>
+  </div>
 </template>
 
 <script>

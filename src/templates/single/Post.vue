@@ -1,7 +1,7 @@
 <template>
-  <Layout>
+  <div :key="$context.id">
     <Hero :fields="heroFields" />
-  </Layout>
+  </div>
 </template>
 
 <script>

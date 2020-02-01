@@ -3,7 +3,9 @@
     <div class="home-hero-flash"></div>
     <div class="home-hero-inner">
       <div class="home-hero-content">
-        <h1 class="-blue-bg">{{ fields.title }}</h1>
+        <div class="home-hero-title-animation">
+          <h1 class="-blue-bg">{{ fields.title }}</h1>
+        </div>
         <p>{{ fields.text }}</p>
       </div>
     </div>
@@ -66,6 +68,23 @@ export default {
       transform: rotate(-30deg);
       animation: wipe 5s 2s ease-in infinite forwards;
       opacity: .05;
+    }
+
+    &-title-animation {
+      opacity: 0;
+      animation: transform-in .3s .2s ease-out forwards;
+    }
+  }
+
+  @keyframes transform-in {
+    0% {
+      transform: matrix(0.35,-0.10,-0.50,0.89,34,-11);
+      opacity: .1;
+    }
+
+    100% {
+      transform: matrix(0, 0, 0, 0,3 0, 0);
+      opacity: 1;
     }
   }
 
