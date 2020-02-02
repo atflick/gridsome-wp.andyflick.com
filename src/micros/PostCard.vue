@@ -33,7 +33,7 @@ export default {
 
     &-top {
       position: relative;
-      border-bottom: 8px solid rgba(primary-color(red), .2);
+      border-bottom: 8px solid rgba(primary-color(purple), .2);
       margin-bottom: 15px;
       overflow: hidden;
     }

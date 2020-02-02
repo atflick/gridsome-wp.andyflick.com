@@ -104,7 +104,7 @@ export default {
           width: 200px;
           flex: 0 0 auto;
           margin: 0 25px 0 0;
-          border-right: 8px solid rgba(primary-color(red), .2);
+          border-right: 8px solid rgba(primary-color(purple), .2);
           border-bottom: 0;
         }
       }
