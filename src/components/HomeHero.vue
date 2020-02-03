@@ -1,6 +1,8 @@
 <template>
-  <div class="home-hero" :style="{ backgroundImage: `url(${fields.image.url})`}">
-    <div class="home-hero-flash"></div>
+  <div class="home-hero">
+    <ParallaxContainer class="home-hero-parallax-container" :factor=".4" direction="up">
+      <ParallaxImage :imageUrl="fields.image.url"/>
+    </ParallaxContainer>
     <div class="home-hero-inner">
       <div class="home-hero-content">
         <div class="home-hero-title-animation">
@@ -14,7 +16,13 @@
 
 
 <script>
+import ParallaxContainer from '../micros/parallax/ParallaxContainer.vue';
+import ParallaxImage from '../micros/parallax/ParallaxImage.vue';
 export default {
+  components: {
+    ParallaxContainer,
+    ParallaxImage
+  },
   props: {
     fields: Object
   }
@@ -28,15 +36,17 @@ export default {
     position: relative;
     @include content-constraint($margin: 0, $inner-padding: true);
     min-height: 300px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     @include bg-pattern;
     min-height: 350px;
     overflow: hidden;
 
     @include from(10) {
       min-height: 450px;
+    }
+
+    &-parallax-container {
+      z-index: -1;
+      @include absolute(0, 0, 0, 0);
     }
 
     &-content {
