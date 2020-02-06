@@ -29,23 +29,29 @@ export default {
         scrollFactor: 0,
         width: 0,
         sizeFactor: this.factor,
-        direction: this.direction
+        direction: this.direction,
+        y: 0
       },
+      requestId: null,
+      scrolling: false,
+      ease: 0.05
     };
   },
   mounted() {
-    this.calcParallax();
 
-    const eventHandler = () => requestAnimationFrame(this.calcParallax);
-    window.addEventListener('resize', eventHandler);
-    window.addEventListener('scroll', eventHandler);
+    this.onLoad();
 
     this.$on(`hook:destroyed`, () => {
-      window.removeEventListener('resize', eventHandler);
-      window.removeEventListener('scroll', eventHandler);
+      window.removeEventListener('resize', this.onScroll);
+      window.removeEventListener('scroll', this.onScroll);
     });
   },
   methods: {
+    onLoad() {
+      this.calcParallax();
+      window.addEventListener('resize', this.onScroll);
+      window.addEventListener('scroll', this.onScroll);
+    },
     calcParallax() {
       const containerRect = this.$el.getBoundingClientRect();
 
@@ -54,9 +60,24 @@ export default {
 
       const viewportOffsetTop = containerRect.top;
       const viewportOffsetBottom = window.innerHeight - viewportOffsetTop;
+      const endScroll = viewportOffsetBottom / (window.innerHeight + this.data.height);
 
-      this.data.scrollFactor = viewportOffsetBottom / (window.innerHeight + this.data.height);
+      this.data.scrollFactor = endScroll;
+      this.data.y += (this.data.scrollFactor - this.data.y) * this.ease;
+
+      if (Math.abs(endScroll - this.data.y) <= 0.001) {
+        this.data.y = endScroll;
+        this.scrolling = false;
+      }
+
+      this.requestId = this.scrolling ? requestAnimationFrame(this.calcParallax) : null
     },
+    onScroll() {
+      this.scrolling = true;
+      if (!this.requestId) {
+        this.requestId = requestAnimationFrame(this.calcParallax);
+      }
+    }
   },
 }
 </script>

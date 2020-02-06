@@ -1,10 +1,11 @@
 <template>
   <div
     :style="{
-      transform: `translate3d(0, ${offset}px, 0)`,
+
       height: `${compensatedHeight}px`
     }"
     class="parallax-element"
+    ref="parallaxElement"
   >
 
     <slot/>
@@ -12,9 +13,14 @@
 </template>
 
 <script>
+import { TweenLite } from 'gsap';
+
 export default {
   name: 'ParallaxElement',
   inject: ['parallaxContainer'],
+  mounted() {
+    this.moveElement(this.offset)
+  },
   computed: {
     totalMovement() {
       const { height, sizeFactor } = this.parallaxContainer;
@@ -25,14 +31,26 @@ export default {
       return height + this.totalMovement;
     },
     offset() {
-      const { height, scrollFactor, sizeFactor, direction } = this.parallaxContainer;
+      const { height, y, sizeFactor, direction } = this.parallaxContainer;
 
       if (direction === 'up') {
-        return -this.totalMovement - (1 - scrollFactor) * -this.totalMovement;
+        return -this.totalMovement - (1 - y) * -this.totalMovement;
       } else {
-        return (1 - scrollFactor) * -this.totalMovement;
+        return (1 - y) * -this.totalMovement;
       }
     }
   },
+  methods: {
+    moveElement(offset) {
+      // console.log(offset);
+
+      TweenLite.set(this.$refs.parallaxElement, { y: offset});
+    }
+  },
+  watch: {
+    offset(newOffset, oldOffset) {
+      this.moveElement(newOffset);
+    }
+  }
 };
 </script>
