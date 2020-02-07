@@ -5,6 +5,12 @@ import DefaultLayout from '~/layouts/Default.vue'
 import { upperFirst, camelCase } from 'lodash'
 import '~/assets/css/style.scss'
 
+import { gsap } from 'gsap'
+import { CSSPlugin } from 'gsap/CSSPlugin'
+
+// Force CSSPlugin to not get dropped during build
+gsap.registerPlugin(CSSPlugin)
+
 const requireComponent = require.context(
   // The relative path of the components folder
   './components',
