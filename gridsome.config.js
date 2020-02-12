@@ -22,7 +22,7 @@ function addStyleResource (rule) {
 }
 
 module.exports = {
-  siteName: 'Gridsome',
+  siteName: 'Andy Flick',
   plugins: [],
   chainWebpack (config) {
     // Load variables for all vue-files

@@ -148,7 +148,10 @@ class WPSource {
           const termMeta = {
             id: term.id,
             title: term.name,
-            slug: term.slug
+            slug: term.slug,
+            location: {
+              path: `/${taxonomy.base}/${term.slug}`
+            }
           };
           taxCollection.addNode(termMeta);
           taxonomy.terms.push(termMeta);
@@ -245,7 +248,7 @@ class WPSource {
       taxonomy = this.restBases.taxonomies[taxonomy];
       for (const term of taxonomy.terms) {
         actions.createPage({
-          path: `/${taxonomy.base}/:term`,
+          path: `/${taxonomy.base}/${term.slug}`,
           component: `./src/templates/${taxonomy.collection}.vue`,
           context: {
             ...term
