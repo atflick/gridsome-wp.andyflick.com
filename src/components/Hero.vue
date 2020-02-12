@@ -1,6 +1,6 @@
 <template>
   <div class="hero">
-    <ParallaxContainer class="hero-parallax-container" :factor=".4" direction="up">
+    <ParallaxContainer class="hero-parallax-container" :factor=".4" direction="up" :v-if="fields.image">
       <ParallaxImage :imageUrl="fields.image.url"/>
     </ParallaxContainer>
     <div class="hero-inner">
@@ -33,9 +33,11 @@ export default {
     @include content-constraint($margin: 0, $inner-padding: true);
     min-height: 300px;
     @include bg-pattern;
+    background: rgba(primary-color(purple), .5);
 
     &-parallax-container {
-      z-index: -1;
+      position: relative;
+      /* z-index: -1; */
       @include absolute(0, 0, 0, 0);
     }
 

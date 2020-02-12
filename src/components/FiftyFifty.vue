@@ -1,5 +1,5 @@
 <template>
-  <div class="fifty-fifty">
+  <div class="fifty-fifty" :data-image-left="fields.image_left">
     <div class="fifty-fifty-inner">
       <div class="fifty-fifty-content">
         <div class="fifty-fifty-content-inner">
@@ -30,7 +30,8 @@ export default {
           title: this.$attrs.fields.link.title,
           url: this.$attrs.fields.link.url,
           target: this.$attrs.fields.link.target
-        }
+        },
+        image_left: this.$attrs.fields.image_left[0]
       }
     }
   }
@@ -57,6 +58,7 @@ export default {
 
       @include from(7) {
         margin: 0;
+        width: 50%;
         max-width: 500px;
         flex: 1 0 auto;
       }
@@ -66,6 +68,11 @@ export default {
 
         @include from(7) {
           padding-right: 50px;
+
+          [data-image-left='true'] & {
+            padding-right: 0;
+            padding-left: 50px;
+          }
         }
       }
 
@@ -90,6 +97,10 @@ export default {
         flex: 1 0 auto;
         margin: 0;
         height: auto;
+
+        [data-image-left='true'] & {
+          order: -1;
+        }
       }
 
       img {

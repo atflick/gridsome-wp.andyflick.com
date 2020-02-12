@@ -33,7 +33,7 @@ export default {
         y: 0
       },
       requestId: null,
-      scrolling: false,
+      scrolling: true,
       ease: 0.05
     };
   },

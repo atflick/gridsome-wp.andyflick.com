@@ -32,18 +32,17 @@ export default {
     },
     offset() {
       const { height, y, sizeFactor, direction } = this.parallaxContainer;
+      const adjustedY = y > 0 ? y < 1 ? y : 1 : 0;
 
       if (direction === 'up') {
-        return -this.totalMovement - (1 - y) * -this.totalMovement;
+        return -this.totalMovement - (1 - adjustedY) * -this.totalMovement;
       } else {
-        return (1 - y) * -this.totalMovement;
+        return (1 - adjustedY) * -this.totalMovement;
       }
     }
   },
   methods: {
     moveElement(offset) {
-      // console.log(offset);
-
       TweenLite.set(this.$refs.parallaxElement, { y: offset});
     }
   },

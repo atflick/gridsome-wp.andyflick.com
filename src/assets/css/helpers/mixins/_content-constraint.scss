@@ -15,11 +15,16 @@
   }
 
   @include from(9) {
+    padding-left: $padding / 2;
+    padding-right: $padding / 2;
+  }
+
+  @include from(12) {
     padding-left: $padding;
     padding-right: $padding;
   }
 
-  @include from(12) {
+  @include from(15) {
     padding-left: $padding * 2;
     padding-right: $padding * 2;
   }

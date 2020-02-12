@@ -6,8 +6,10 @@
 
 <script>
 export default {
-  metaInfo: {
-    title: 'About us'
+  metaInfo() {
+    return {
+      title: this.$context.title
+    }
   },
   computed: {
     heroFields() {

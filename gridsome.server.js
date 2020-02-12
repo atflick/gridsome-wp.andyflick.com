@@ -11,7 +11,7 @@ module.exports = function (api) {
   const WP = new WPSource(api, {
     baseUrl: wpUrl,
     apiBase: process.env.API_BASE,
-    postTypes: ['post', 'team'],
+    postTypes: ['post'],
     menuIds: [2]
   });
 

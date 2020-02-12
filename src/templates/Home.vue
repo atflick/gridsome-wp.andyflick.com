@@ -1,19 +1,21 @@
 <template>
   <div>
-    <HomeHero :fields="homeHero" />
+    <HomeHero :fields="hero" />
     <RecentPosts />
   </div>
 </template>
 
 <script>
 export default {
-  metaInfo: {
-    title: 'About us'
+  metaInfo() {
+    return {
+      title: this.$context.title
+    }
   },
   computed: {
-    homeHero() {
-      if (this.$context.fields.home_hero) {
-        return this.$context.fields.home_hero;
+    hero() {
+      if (this.$context.fields.hero) {
+        return this.$context.fields.hero;
       }
     }
   }

@@ -66,6 +66,7 @@ class WPSource {
       }
 
       this.createPostPages(actions);
+      this.createTaxonomyPages(actions);
 
     });
   }
@@ -138,20 +139,24 @@ class WPSource {
 
     for (let taxonomy in this.restBases.taxonomies) {
       taxonomy = this.restBases.taxonomies[taxonomy];
+      taxonomy.terms = [];
 
       const response = await this.fetch(`/wp/v2/${taxonomy.base}`)
       if (response.data.length) {
         const taxCollection = actions.getCollection(taxonomy.collection)
         for (const term of response.data) {
-          taxCollection.addNode({
+          const termMeta = {
             id: term.id,
             title: term.name,
-            slug: term.slug,
-            path: `/${taxonomy}/${term.slug}`
-          });
+            slug: term.slug
+          };
+          taxCollection.addNode(termMeta);
+          taxonomy.terms.push(termMeta);
         }
       }
     }
+    console.log(this.restBases.taxonomies);
+
   }
 
   async getTypes(actions) {
@@ -235,6 +240,21 @@ class WPSource {
     }
   }
 
+  createTaxonomyPages(actions) {
+    for (let taxonomy in this.restBases.taxonomies) {
+      taxonomy = this.restBases.taxonomies[taxonomy];
+      for (const term of taxonomy.terms) {
+        actions.createPage({
+          path: `/${taxonomy.base}/:term`,
+          component: `./src/templates/${taxonomy.collection}.vue`,
+          context: {
+            ...term
+          }
+        });
+      }
+    }
+  }
+
   async fetch (url, params = {}, fallbackData = []) {
     let res
 
@@ -268,13 +288,7 @@ class WPSource {
           found = path.match(regex),
           nameSplit = found ? found[0].split('-') : path.split('-');
 
-    if (nameSplit.length > 1) {
-      return nameSplit.reduce((accum, next) => {
-        return accum + upperFirst(next);
-      });
-    } else {
-      return upperFirst(nameSplit[0]);
-    }
+    return nameSplit.map(upperFirst).join('');
   }
 
   pascalCase(str) {
