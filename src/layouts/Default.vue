@@ -4,7 +4,7 @@
       <div class="page-container" ref="pageContainer">
         <Header/>
           <main>
-            <transition name="fade" mode="out-in" v-on:leave="leave" v-on:enter="enter">
+            <transition :name="transitionName" mode="out-in" v-on:leave="leave" v-on:after-enter="enter" appear>
               <router-view  :key="$context.id"></router-view>
             </transition>
           </main>
@@ -35,7 +35,8 @@ export default {
       scroller: {},
       requestId: null,
       height: 0,
-      transitionComplete: false
+      transitionComplete: false,
+      transitionName: 'slide'
     }
   },
   mounted() {
@@ -97,8 +98,6 @@ export default {
       }
     },
     onResize() {
-      console.log('asds');
-
       this.scroller.resizeRequest++;
       if (!this.requestId) {
         this.requestId = requestAnimationFrame(this.updateScroller);
@@ -116,6 +115,14 @@ export default {
       if (to) {
         this.scroller.resizeRequest = 1;
         this.updateScroller();
+      }
+    },
+    $route(to, from) {
+      console.log(to, from);
+      if (to.name === 'Categories' && from.name === 'Categories') {
+        this.transitionName = 'categories';
+      } else {
+        this.transitionName = 'slide';
       }
     }
   }
@@ -150,28 +157,31 @@ export default {
     transform-style: preserve-3d;
   }
 
-  .fade-leave-active {
-    transition: all .5s;
-    opacity: 1;
-    transform: translateX(0);
+  .slide {
+    &-leave-active {
+      transition: all .5s;
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    &-leave-to /* .slide-leave-active below version 2.1.8 */ {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+
+    &-enter {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+
+    &-enter-to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    &-enter-active {
+      transition: all .5s;
+    }
   }
 
-  .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-
-  .fade-enter {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-
-  .fade-enter-to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .fade-enter-active {
-    transition: all .5s;
-  }
 </style>

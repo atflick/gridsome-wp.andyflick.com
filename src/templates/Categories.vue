@@ -1,10 +1,13 @@
 <template>
-  <div class="categories">
-    <Hero :fields="hero" />
-    <BlogListing :posts="$page.posts.belongsTo.edges">
-      <Pager :info="$page.posts.belongsTo.pageInfo" />
-    </BlogListing>
-  </div>
+  <transition name="fade">
+    <div class="categories">
+      <Hero :fields="hero" />
+      <BlogListing :posts="$page.posts.belongsTo.edges">
+        <Pager :info="$page.posts.belongsTo.pageInfo" />
+      </BlogListing>
+    </div>
+
+  </transition>
 </template>
 <page-query>
   query ($id: ID!, $page: Int) {
@@ -21,20 +24,20 @@
         edges {
           node {
             ... on Posts {
-              id,
-              title,
-              url,
+              id
+              title
+              url
               acf {
                 insights_fields {
-                  intro_text,
+                  intro_text
                   featured_image {
                     url
                   }
                 }
-              },
-              date,
+              }
+              date
               categories {
-                title,
+                title
                 id
               }
             }
@@ -66,5 +69,24 @@ export default {
 </script>
 
 <style lang="scss">
+  .fade-leave-active {
+    transition: all .5s;
+    opacity: 1;
+  }
 
+  .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+
+  .fade-enter {
+    opacity: 0;
+  }
+
+  .fade-enter-to {
+    opacity: 1;
+  }
+
+  .fade-enter-active {
+    transition: all .5s;
+  }
 </style>

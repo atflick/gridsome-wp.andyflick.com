@@ -3,7 +3,7 @@
     <div class="category-facets-title h4">Categories</div>
     <ul class="category-facets-container">
       <li v-for="cat in cats" :key="cat.node.id">
-        <a :href="cat.node.location.path">{{ cat.node.title }}</a>
+        <a :href="cat.node.location.path">{{ cat.node.title }}({{ cat.node.count }})</a>
       </li>
     </ul>
   </div>
@@ -16,6 +16,7 @@
           title
           id
           slug
+          count
           location {
             path
           }

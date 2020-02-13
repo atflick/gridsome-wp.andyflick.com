@@ -33,7 +33,8 @@ export default {
     @include content-constraint($margin: 0, $inner-padding: true);
     min-height: 300px;
     @include bg-pattern;
-    background: rgba(primary-color(purple), .5);
+    background: $purple-blue;
+    overflow: hidden;
 
     &-parallax-container {
       position: relative;

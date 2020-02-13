@@ -55,6 +55,9 @@ class WPSource {
         actions.createPage({
           path,
           component: `./src/templates/${template}.vue`,
+          route: {
+            name: template
+          },
           context: {
             id: page.id,
             title: page.title.rendered,
@@ -145,21 +148,22 @@ class WPSource {
       if (response.data.length) {
         const taxCollection = actions.getCollection(taxonomy.collection)
         for (const term of response.data) {
-          const termMeta = {
-            id: term.id,
-            title: term.name,
-            slug: term.slug,
-            location: {
-              path: `/${taxonomy.base}/${term.slug}`
-            }
-          };
-          taxCollection.addNode(termMeta);
-          taxonomy.terms.push(termMeta);
+          if (term.count > 0) {
+            const termMeta = {
+              id: term.id,
+              title: term.name,
+              slug: term.slug,
+              count: term.count,
+              location: {
+                path: `/${taxonomy.base}/${term.slug}`
+              }
+            };
+            taxCollection.addNode(termMeta);
+            taxonomy.terms.push(termMeta);
+          }
         }
       }
     }
-    console.log(this.restBases.taxonomies);
-
   }
 
   async getTypes(actions) {
@@ -230,6 +234,9 @@ class WPSource {
 
         actions.createPage({
           path,
+          route: {
+            name: template
+          },
           component: `./src/templates/single/${template}.vue`,
           context: {
             id: post.id,
@@ -249,6 +256,9 @@ class WPSource {
       for (const term of taxonomy.terms) {
         actions.createPage({
           path: `/${taxonomy.base}/${term.slug}`,
+          route: {
+            name: taxonomy.collection
+          },
           component: `./src/templates/${taxonomy.collection}.vue`,
           context: {
             ...term
