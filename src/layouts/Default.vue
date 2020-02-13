@@ -22,6 +22,7 @@
   }
 </static-query>
 <script>
+import { EventBus } from '../event-bus';
 import Header from '~/components/Header.vue'
 import { TweenLite } from 'gsap';
 
@@ -59,6 +60,7 @@ export default {
       window.focus();
       window.addEventListener('resize', this.onResize);
       document.addEventListener('scroll', this.onScroll);
+      EventBus.$on('page-change', this.onResize);
     },
     updateScroller() {
       const resized = this.scroller.resizeRequest > 0;
@@ -95,6 +97,8 @@ export default {
       }
     },
     onResize() {
+      console.log('asds');
+
       this.scroller.resizeRequest++;
       if (!this.requestId) {
         this.requestId = requestAnimationFrame(this.updateScroller);

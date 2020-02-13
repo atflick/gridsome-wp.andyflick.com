@@ -41,7 +41,7 @@
   }
 </page-query>
 <script>
-
+import { EventBus } from '../event-bus';
 import BlogListing from '../micros/BlogListing'
 import { Pager } from 'gridsome';
 export default {
@@ -61,7 +61,11 @@ export default {
         return this.$context.fields.hero;
       }
     },
-
+  },
+  watch: {
+    $page() {
+      EventBus.$emit('page-change');
+    }
   }
 }
 </script>
