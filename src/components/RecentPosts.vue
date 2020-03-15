@@ -2,11 +2,15 @@
   <div class="recent-posts">
     <div class="recent-posts-inner">
       <div class="recent-posts-intro">
-        <h2>Recent Posts</h2>
+        <h2 class="-red-bg">Recent Posts</h2>
       </div>
       <div class="recent-posts-container">
         <PostCard v-for="post in posts" :fields="post" :key="post.id" />
       </div>
+    </div>
+
+    <div class="recent-posts-more">
+      <a href="/blog" class="button"><span>See More</span></a>
     </div>
   </div>
 </template>
@@ -77,6 +81,10 @@ export default {
       }
     }
 
+    &-intro {
+      margin-bottom: 50px;
+    }
+
     .post-card {
 
       @include between(6, 8) {
@@ -115,6 +123,11 @@ export default {
           padding-top: 20px;
         }
       }
+    }
+
+    &-more {
+      padding-top: 30px;
+      text-align: center;
     }
   }
 </style>

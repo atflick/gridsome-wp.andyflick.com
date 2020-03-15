@@ -56,7 +56,9 @@ class WPSource {
           path,
           component: `./src/templates/${template}.vue`,
           route: {
-            name: template
+            meta: {
+              routeId: template
+            }
           },
           context: {
             id: page.id,
@@ -235,7 +237,9 @@ class WPSource {
         actions.createPage({
           path,
           route: {
-            name: template
+            meta: {
+              routeId: template
+            }
           },
           component: `./src/templates/single/${template}.vue`,
           context: {
@@ -257,7 +261,9 @@ class WPSource {
         actions.createPage({
           path: `/${taxonomy.base}/${term.slug}`,
           route: {
-            name: taxonomy.collection
+            meta: {
+              routeId: taxonomy.collection
+            }
           },
           component: `./src/templates/${taxonomy.collection}.vue`,
           context: {

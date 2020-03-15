@@ -1,9 +1,6 @@
 <template>
   <div
-    :style="{
-
-      height: `${compensatedHeight}px`
-    }"
+    :style="{ height: `${compensatedHeight}px` }"
     class="parallax-element"
     ref="parallaxElement"
   >

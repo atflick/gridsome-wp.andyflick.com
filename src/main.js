@@ -50,4 +50,24 @@ export default function (Vue, { appOptions, router, head, isClient }) {
       componentConfig.default || componentConfig
     )
   })
+
+  head.link.push({
+    rel: 'stylesheet',
+    href: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css'
+  })
+
+  head.link.push({
+    rel: 'stylesheet',
+    href: 'https://cdn.jsdelivr.net/npm/vue-mapbox@latest/dist/vue-mapbox.css'
+  })
+
+  head.script.push({
+    src: 'https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js',
+    body: true
+  })
+
+  head.script.push({
+    src: 'https://cdn.jsdelivr.net/npm/vue-mapbox@latest/dist/vue-mapbox.min.js',
+    body: true
+  })
 }

@@ -1,0 +1,50 @@
+@font-face {
+  font-family: 'icomoon';
+  src:
+    url('/fonts/icomoon.ttf') format('truetype'),
+    url('/fonts/icomoon.woff') format('woff'),
+    url('/fonts/icomoon.svg#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+$icons: (
+  pencil: '\e905',
+  pencil2: '\e906',
+  images: '\e90e',
+  books: '\e920',
+  file-empty: '\e924',
+  location: '\e947',
+  clock: '\e94e',
+  bubbles4: '\e970',
+  quotes-left: '\e977',
+  quotes-right: '\e978',
+  rocket: '\e9a5',
+  meter: '\e9a6',
+  fire: '\e9a9',
+  power: '\e9b5',
+  spell-check: '\ea12',
+  loop2: '\ea2e',
+  embed2: '\ea80',
+  terminal: '\ea81',
+  github: '\eab0',
+  linkedin: '\eac9'
+);
+
+[class^='icon-'],
+[class*=' icon-'] {
+
+  &::before {
+    @include icomoon;
+  }
+}
+
+@each $icon, $content in $icons {
+  .icon-#{$icon} {
+
+    &::before {
+      content: '#{$content}';
+    }
+  }
+}

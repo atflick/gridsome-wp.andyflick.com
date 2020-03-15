@@ -118,8 +118,7 @@ export default {
       }
     },
     $route(to, from) {
-      console.log(to, from);
-      if (to.name === 'Categories' && from.name === 'Categories') {
+      if (to.meta.routeId === 'Categories' && from.meta.routeId === 'Categories') {
         this.transitionName = 'categories';
       } else {
         this.transitionName = 'slide';
