@@ -63,14 +63,6 @@ export default {
     &-inner {
       padding-bottom: 1px;
 
-      /* @include from(7) {
-        padding-bottom: 50px;
-      }
-
-      @include from(10) {
-        padding-bottom: 0;
-      } */
-
       @include to(9) {
         max-width: 700px;
       }

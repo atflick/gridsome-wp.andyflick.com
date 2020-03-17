@@ -6,10 +6,11 @@
     </div>
     <div class="map-wrapper">
       <MglMap :accessToken="accessToken" :mapStyle="mapStyle" @load="onMapLoad" ref="map">
-        <MglMarker v-for="marker in activeMarkers" :coordinates="marker.coordinates" :color="marker.color" anchor="top" :key="marker.name">
-          <MglPopup>
+        <MglMarker v-for="marker in activeMarkers" :coordinates="marker.coordinates" anchor="top" :key="marker.name">
+          <div class="icon-location"></div>
+          <!-- <MglPopup>
             <div>{{ marker.name }}</div>
-          </MglPopup>
+          </MglPopup> -->
         </MglMarker>
       </MglMap>
     </div>
@@ -66,55 +67,48 @@ export default {
            color: 'blue'
          }
        ]
-      }
+      },
+      map: {}
     };
   },
   created() {
     // We need to set mapbox-gl library here in order to use it in template
-    this.mapbox = Mapbox;
+    this.map = null;
   },
   methods: {
     async onMapLoad(event) {
       // Here we cathing 'load' map event
+      console.log(Mapbox);
+
+      this.map = event.map;
       const asyncActions = event.component.actions
       this.activeMarkers = this.markers.work;
-      const center = this.findMapCenter(this.activeMarkers);
-      console.log(this.$refs.map);
-      this.$refs.map
-      const newParams = await asyncActions.flyTo({
-        center,
-        zoom: 9,
-        speed: 3,
-        bearing: 9,
-        pitch: 7
-      })
+      const coords = this.setBoundsArray(this.activeMarkers);
+      console.log(coords);
+
+      asyncActions.fitBounds(coords, {
+        padding: 50
+      });
     },
     setActiveMarker(category, event) {
 
-
       this.activeMarkers = this.markers[category]
-      const center = this.findMapCenter(this.activeMarkers);
-      console.log(this.$refs.map);
-      // this.mapbox.flyTo({
-      //   center,
-      //   zoom: 9,
-      //   speed: 3,
-      //   bearing: 9,
-      //   pitch: 7
-      // })
+      const coords = this.setBoundsArray(this.activeMarkers);
+      console.log(coords);
+      this.map.fitBounds(coords, {
+        padding: 50
+      })
 
     },
-    findMapCenter(markers) {
+    setBoundsArray(markers) {
+      console.log(markers);
 
-      const initialVal = [0, 0];
-      const totalCoords = markers.reduce((acc, cur, index) => {
+      const bounds = markers.reduce((bounds, marker) => {
+        console.log(Mapbox);
 
-        return [acc[0] + cur.coordinates[0], acc[1] + cur.coordinates[1]]
-
-      }, initialVal);
-
-      return [totalCoords[0] / markers.length, totalCoords[1] / markers.length]
-
+        return bounds.extend(marker.coordinates);
+      }, new Mapbox.LngLatBounds(markers[0].coordinates, markers[0].coordinates));
+      return bounds;
     }
   }
 };
@@ -123,5 +117,25 @@ export default {
 <style lang="scss">
   .map-wrapper {
     height: 500px;
+  }
+
+  .mapboxgl {
+
+    &-popup-content {
+      padding: 25px !important;
+      border-radius: 0 !important;
+      box-shadow: $shadow;
+      border-top: 4px solid rgba(primary-color(purple), .3);
+
+      > div {
+        font-family: $body-font !important;
+        @include rem(font-size, 16px);
+      }
+    }
+
+    &-popup-close-button {
+      @include rem(font-size, 18px);
+      outline: 0;
+    }
   }
 </style>
