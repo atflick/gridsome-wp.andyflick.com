@@ -2,46 +2,18 @@
   <div class="icons-four">
     <div class="icons-four-inner">
       <div class="icons-four-intro">
-        <h2 class="icons-four-title -red-bg">This is the title</h2>
-        <div class="icons-four-text">Lorem ipsum dolor whatcha doing today?</div>
+        <h2 class="icons-four-title -red-bg">{{ fields.title }}</h2>
+        <div class="icons-four-text">{{ fields.text }}</div>
       </div>
       <div class="icons-four-container">
 
-        <div class="icons-four-item">
+        <div class="icons-four-item" v-for="item in fields.items" :key="">
           <div class="icons-four-item-icon-bg">
-            <div class="icons-four-item-icon icon-fire"></div>
+            <div class="icons-four-item-icon" :class="`icon-${item.icon}`"></div>
           </div>
-          <div class="icons-four-item-title h4">This is the catchy title</div>
+          <div class="icons-four-item-title h4">{{ item.title }}</div>
           <div class="icons-four-item-text">
-            Here is some longer text, it will be hidden until the item is hovered.
-          </div>
-        </div>
-
-        <div class="icons-four-item">
-          <div class="icons-four-item-icon-bg">
-            <div class="icons-four-item-icon icon-fire"></div>
-          </div>
-          <div class="icons-four-item-title h4">This is the catchy title</div>
-          <div class="icons-four-item-text">
-            Here is some longer text, it will be hidden until the item is hovered.
-          </div>
-        </div>
-        <div class="icons-four-item">
-          <div class="icons-four-item-icon-bg">
-            <div class="icons-four-item-icon icon-fire"></div>
-          </div>
-          <div class="icons-four-item-title h4">This is the catchy title</div>
-          <div class="icons-four-item-text">
-            Here is some longer text, it will be hidden until the item is hovered.
-          </div>
-        </div>
-        <div class="icons-four-item">
-          <div class="icons-four-item-icon-bg">
-            <div class="icons-four-item-icon icon-fire"></div>
-          </div>
-          <div class="icons-four-item-title h4">This is the catchy title</div>
-          <div class="icons-four-item-text">
-            Here is some longer text, it will be hidden until the item is hovered.
+            {{ item.text }}
           </div>
         </div>
 
@@ -52,7 +24,15 @@
 
 <script>
 export default {
-
+  computed: {
+    fields() {
+      return {
+        title: this.$attrs.fields.title,
+        text: this.$attrs.fields.text,
+        items: this.$attrs.fields.items
+      }
+    }
+  }
 }
 </script>
 
