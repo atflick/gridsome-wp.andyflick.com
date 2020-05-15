@@ -14,6 +14,7 @@ jobs:
       run: |
         export WORDPRESS_URL="https://www.andyflick.com/af-wp"
         export API_BASE="wp-json"
+        npm install --global @gridsome/cli
         yarn
         gridsome build
     - name: rsync deployments
