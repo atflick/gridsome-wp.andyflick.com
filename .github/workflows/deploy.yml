@@ -1,4 +1,4 @@
-name: Deploy Vue Build
+name: deploy-vue-build
 on:
   push:
     branches:
