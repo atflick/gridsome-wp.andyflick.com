@@ -11,7 +11,7 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v1
     - name: Build dist
       run: |
         export WORDPRESS_URL="https://www.andyflick.com/af-wp"
@@ -22,7 +22,7 @@ jobs:
     - name: rsync deployments
       uses: burnett01/rsync-deployments@4.0
       with:
-        switches: -avz --no-perms --delete --exclude=".htaccess af-wp"
+        switches: -avz --no-perms --delete --exclude=".htaccess, af-wp"
         path: dist/
         remote_path: public_html/
         remote_host: ${{ secrets.DEPLOY_HOST }}
