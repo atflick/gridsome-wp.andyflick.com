@@ -6,7 +6,7 @@
     <div class="home-hero-inner">
       <div class="home-hero-content">
         <div class="home-hero-title-animation">
-          <h1 class="-blue-bg">{{ fields.title }}</h1>
+          <h1 class="-blue-bg">{{ fields.title }} test</h1>
         </div>
         <p>{{ fields.text }}</p>
       </div>

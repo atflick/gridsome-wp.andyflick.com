@@ -22,7 +22,7 @@ jobs:
       with:
         switches: -avz --no-perms --delete --exclude=".htaccess"
         path: dist/
-        remote_path: public_html
+        remote_path: public_html/
         remote_host: ${{ secrets.DEPLOY_HOST }}
         remote_port: ${{ secrets.DEPLOY_PORT }}
         remote_user: ${{ secrets.DEPLOY_USER }}
