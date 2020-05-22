@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+  repository_dispatch:
+    types: deploy
 
 jobs:
   deploy:
@@ -20,7 +22,7 @@ jobs:
     - name: rsync deployments
       uses: burnett01/rsync-deployments@4.0
       with:
-        switches: -avz --no-perms --delete --exclude=".htaccess"
+        switches: -avz --no-perms --delete --exclude=".htaccess af-wp"
         path: dist/
         remote_path: public_html/
         remote_host: ${{ secrets.DEPLOY_HOST }}
