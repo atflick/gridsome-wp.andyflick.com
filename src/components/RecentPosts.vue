@@ -4,9 +4,9 @@
       <div class="recent-posts-intro">
         <h2 class="-red-bg">Recent Posts</h2>
       </div>
-      <div class="recent-posts-container">
-        <PostCard v-for="post in posts" :fields="post" :key="post.id" />
-      </div>
+      <Observer :callback="fadeIn" class="recent-posts-container">
+        <PostCard v-for="post in posts" :fields="post" :key="post.id" class />
+      </Observer>
     </div>
 
     <div class="recent-posts-more">
@@ -45,9 +45,11 @@
 <script>
 import moment from 'moment';
 import PostCard from '../micros/PostCard';
+import Observer from '../micros/Observer';
 export default {
   components: {
-    PostCard
+    PostCard,
+    Observer
   },
   computed: {
     posts() {
@@ -61,6 +63,15 @@ export default {
           image: post.node.acf.insights_fields.featured_image.url
         }
       });
+    }
+  },
+  methods: {
+    fadeIn(target, index) {
+      console.log(target, index)
+      const time = 200 * index
+      setTimeout(() => {
+        target.classList.add('-show')
+      }, time)
     }
   }
 }
@@ -77,7 +88,7 @@ export default {
       }
 
       @include from(12) {
-        margin: 0 -25px;
+        margin: 0 -45px;
       }
     }
 
@@ -86,6 +97,14 @@ export default {
     }
 
     .post-card {
+      transform: translateY(-25px);
+      opacity: 0;
+      transition: $te $ts;
+
+      &.-show {
+        transform: translateY(0);
+        opacity: 1;
+      }
 
       @include between(6, 8) {
         display: flex;

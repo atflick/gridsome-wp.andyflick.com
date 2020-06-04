@@ -7,7 +7,7 @@
       </div>
       <div class="icons-four-container">
 
-        <div class="icons-four-item" v-for="item in fields.items" :key="">
+        <div class="icons-four-item" v-for="(item, index) in fields.items" :key="index">
           <div class="icons-four-item-icon-bg">
             <div class="icons-four-item-icon" :class="`icon-${item.icon}`"></div>
           </div>
