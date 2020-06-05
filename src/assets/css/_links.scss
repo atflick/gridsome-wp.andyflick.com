@@ -87,5 +87,22 @@ a {
         width: 100%;
       }
     }
+
+    &.-white {
+      color: #fff;
+      background-color: rgba(primary-color(purple), .4);
+
+      &::before {
+        background-color: primary-color(white);
+      }
+
+      &::after {
+        background-color: primary-color(white, tint1);
+      }
+
+      @include hover {
+        color: primary-color(gray);
+      }
+    }
   }
 }

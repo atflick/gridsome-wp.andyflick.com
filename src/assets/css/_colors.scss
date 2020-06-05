@@ -7,7 +7,9 @@ $primarycolors: (
     tint1: #c5c6c7
   ),
   white: (
-    base: #fff
+    tint1: rgba(#fff, .8),
+    base: #fff,
+    shade1: darken(#fff, 10%)
   ),
   blue: (
     shade1: #459ca2,
