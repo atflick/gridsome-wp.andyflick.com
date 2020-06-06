@@ -64,27 +64,6 @@ export default {
     overflow-y: auto;
   }
 
-  .viewport {
-    overflow: hidden;
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
-  .page-container {
-    position: absolute;
-    overflow: hidden;
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-  }
-
   .slide {
     &-leave-active {
       transition: all .5s;

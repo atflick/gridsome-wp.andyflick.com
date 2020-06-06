@@ -5,7 +5,7 @@
         ref="image"
         class="full-width-image"
         :class="{ stuck: imageStuck }"
-        :style="{ backgroundImage: `url(${fields.bgImage.url})`, ...this.imageStyle, ...this.transform }"
+        :style="{ backgroundImage: `url(${fields.bgImage.url})`, ...this.imageStyle }"
         data-image
       ></div>
 
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { TweenLite } from 'gsap';
+
 export default {
   data() {
     return {
@@ -97,6 +99,11 @@ export default {
 
     return yPosition
     }
+  },
+  watch: {
+    transform(newVal) {
+      TweenLite.set(this.$refs.image, { ...newVal });
+    }
   }
 }
 </script>
@@ -108,7 +115,7 @@ export default {
     @include content-constraint;
 
     &-outer {
-      padding-top: 80vh;
+      padding-top: 50vh;
     }
 
     &-image {
@@ -132,6 +139,10 @@ export default {
     }
 
     &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
       height: 100vh;
       max-width: 550px;
     }
