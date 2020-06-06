@@ -80,7 +80,6 @@ export default {
   },
   methods: {
     onResize() {
-      console.dir(this.$refs.component);
       this.componentOffset = this.getOffsetY(this.$refs.component)
       this.componentHeight = this.$refs.component.clientHeight
       this.componentOffsetBottom = this.componentOffset + this.componentHeight
@@ -119,7 +118,6 @@ export default {
     }
 
     &-image {
-      position: absolute;
       top: 0;
       right: 0;
       left: 0;
@@ -127,6 +125,7 @@ export default {
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      @include bg-pattern(absolute);
 
       &.stuck {
         position: fixed;
