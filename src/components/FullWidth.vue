@@ -4,8 +4,7 @@
       <div
         ref="image"
         class="full-width-image"
-        :class="{ stuck: imageStuck }"
-        :style="{ backgroundImage: `url(${fields.bgImage.url})`, ...this.imageStyle }"
+        :style="{ backgroundImage: `url(${fields.bgImage.url})`, height: `calc(100vh + ${this.offset}px)`}"
         data-image
       ></div>
 
@@ -22,21 +21,21 @@
 
 <script>
 import { TweenLite } from 'gsap';
+import { getOffsetY } from '@/utils'
 
 export default {
   data() {
     return {
       scrollY: 0,
       visible: false,
-      baseLine: 0,
-      offset: 150,
-      imageStyle: {
-        top: 0,
-        bottom: 'auto'
-      },
-      transform: {
-        transform: 'translateY(0) scale(1.1)'
-      }
+      currentPos: 0,
+      offset: 250,
+      scaleAmount: .15,
+      requestId: false,
+      prevScroll: null,
+      ease: .075,
+      requestId: false,
+      ticking: false
     }
   },
   computed: {
@@ -48,25 +47,17 @@ export default {
         bgImage: this.$attrs.fields.background_image
       }
     },
-    imageStuck() {
-      if (this.scrollY < this.componentOffset) {
-        this.imageStyle = { top: 0, bottom: 'auto' }
-        return false
-      } else if (this.scrollY >= this.componentOffset && this.scrollYBottom <= this.componentOffsetBottom) {
-        this.scrollFactor = (this.scrollY - this.componentOffset) / (this.componentHeight - this.windowHeight)
-        const scale = ((this.scrollFactor - 1) * .1) - 1
-        this.transform = { transform: `translateY(-${this.offset * this.scrollFactor}px) scale(${-scale})`}
-
-        this.visible = true
-        return true
-      } else if (this.scrollYBottom > this.componentOffsetBottom) {
-        this.imageStyle = { top: 'auto', bottom: 0 }
-        this.imageStyle = { top: 'auto', bottom: `-${this.offset}px` }
-        return false
-      }
-    },
     scrollYBottom() {
       return this.scrollY + this.windowHeight
+    },
+    inViewScroll() {
+      return this.scrollY - this.componentOffset
+    },
+    translateFactor() {
+      return this.offset / this.windowHeight
+    },
+    scrollFactor() {
+      return this.inViewScroll / (this.componentHeight - this.windowHeight)
     }
   },
   mounted() {
@@ -79,29 +70,54 @@ export default {
     window.addEventListener('scroll', this.onScroll)
   },
   methods: {
+    parallax() {
+      console.log(this.scrollFactor);
+      let target = 0;
+      let scale = 1 + this.scaleAmount
+      if (this.scrollFactor > 1) {
+        target = this.offset
+        scale = 1
+      } else if (this.scrollFactor > 0 && this.scrollFactor < 1) {
+        scale = Math.abs(((this.scrollFactor - 1) * this.scaleAmount) - 1)
+        target = this.inViewScroll - (this.translateFactor * this.inViewScroll)
+        this.visible = true
+      }
+
+      const dif = target - this.currentPos,
+            delta = Math.abs(dif) < 0.1 ? 0 : dif * this.ease
+
+      if (delta) {
+        this.currentPos += delta
+        this.requestId = requestAnimationFrame(this.parallax)
+      } else {
+        this.current = target
+        this.ticking = false;
+        cancelAnimationFrame(this.requestId)
+      }
+      console.log('current:', this.currentPos, 'target:', target);
+
+      this.moveElement({y: this.currentPos, scale})
+    },
+    requestTick() {
+      if (!this.ticking) {
+        this.ticking = true
+        this.requestId = requestAnimationFrame(this.parallax)
+      }
+    },
+    moveElement(movement) {
+      TweenLite.set(this.$refs.image, movement)
+    },
     onResize() {
-      this.componentOffset = this.getOffsetY(this.$refs.component)
+      this.componentOffset = getOffsetY(this.$refs.component) + 15
       this.componentHeight = this.$refs.component.clientHeight
       this.componentOffsetBottom = this.componentOffset + this.componentHeight
       this.windowHeight = window.innerHeight
     },
     onScroll() {
       this.scrollY = window.scrollY
-    },
-    getOffsetY(el) {
-      let yPosition = 0;
+      // console.log('onscroll', this.scrollY);
 
-      while(el) {
-        yPosition += el.offsetTop
-        el = el.offsetParent;
-      }
-
-    return yPosition
-    }
-  },
-  watch: {
-    transform(newVal) {
-      TweenLite.set(this.$refs.image, { ...newVal });
+      this.requestTick()
     }
   }
 }
@@ -118,14 +134,14 @@ export default {
     }
 
     &-image {
-      top: 0;
+      top: -50px;
       right: 0;
       left: 0;
-      height: calc(100vh + 150px);
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       @include bg-pattern(absolute);
+      transition: linear .0s;
 
       &.stuck {
         position: fixed;
