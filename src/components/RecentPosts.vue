@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     fadeIn(target, index) {
-      console.log(target, index)
+      // console.log(target, index)
       const time = 200 * index
       setTimeout(() => {
         target.classList.add('-show')

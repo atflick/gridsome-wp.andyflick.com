@@ -1,8 +1,13 @@
 <template>
   <div class="hero">
-    <ParallaxContainer class="hero-parallax-container" :factor=".4" direction="up" :v-if="fields.image">
-      <ParallaxImage :imageUrl="fields.image.url"/>
-    </ParallaxContainer>
+    <ParallaxContainer
+      class="hero-parallax-container"
+      :factor=".4"
+      direction="up"
+      :imageUrl="fields.image.url"
+      :v-if="fields.image"
+    />
+
     <div class="hero-inner">
       <div class="hero-content">
         <h1 class="-blue-bg">{{ fields.title }}</h1>

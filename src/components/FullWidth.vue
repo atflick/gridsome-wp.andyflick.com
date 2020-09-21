@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     parallax() {
-      console.log(this.scrollFactor);
+      // console.log(this.scrollFactor);
       let target = 0;
       let scale = 1 + this.scaleAmount
       if (this.scrollFactor > 1) {
@@ -94,7 +94,7 @@ export default {
         this.ticking = false;
         cancelAnimationFrame(this.requestId)
       }
-      console.log('current:', this.currentPos, 'target:', target);
+      // console.log('current:', this.currentPos, 'target:', target);
 
       this.moveElement({y: this.currentPos, scale})
     },

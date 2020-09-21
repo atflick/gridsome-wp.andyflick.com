@@ -29,11 +29,12 @@ export default {
     }
   },
   mounted() {
-    console.dir(this.$refs.observeElement)
+    this.defaultOptions = Object.assign(this.defaultOptions, this.options || {});
+
 
     if (this.$refs.observeElement.children) {
       [...this.$refs.observeElement.children].forEach((child) => {
-        console.dir(child)
+        // console.dir(child)
         this.observer.observe(child)
       })
     }
@@ -46,7 +47,6 @@ export default {
   methods: {
     handler(entries, observer) {
       entries.forEach((entry, index) => {
-        console.log(entry);
 
         const { target, intersectionRatio, isIntersecting } = entry
         const midPoint = entry.rootBounds.height / 2

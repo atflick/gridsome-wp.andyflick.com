@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 731.54 487.69">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+    </style>
+    <clipPath id="clip-path" transform="translate(185.77 106.54)">
+      <polygon class="cls-1"
+        points="270 0 270 91.84 180 91.84 180 27.47 90 27.47 90 59.72 0 59.72 0 274.62 90 274.62 180 274.62 270 274.62 360 274.62 360 0 270 0" />
+    </clipPath>
+  </defs>
+  <title>center-text-left</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g class="cls-2">
+
+      </g>
+    </g>
+  </g>
+</svg>
