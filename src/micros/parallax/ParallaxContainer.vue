@@ -31,7 +31,7 @@ export default {
     return {
       el: '',
       bounds: {},
-      windowHeight: window.innerHeight,
+      windowHeight: 0,
       ease: .075,
       current: 0,
       target: 0,
@@ -48,11 +48,15 @@ export default {
   mounted() {
     // this.onLoad();
     this.el = this.$refs.image
-
-    window.addEventListener('resize', this.onResize);
+    if (process.isClient) {
+      this.windowHeight = window.innerHeight;
+      window.addEventListener('resize', this.onResize);
+    }
   },
   destroyed() {
-    window.removeEventListener('resize', this.onResize);
+    if (process.isClient) {
+      window.removeEventListener('resize', this.onResize);
+    }
   },
   computed: {
     scrollHeight() {
