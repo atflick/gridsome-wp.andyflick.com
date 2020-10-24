@@ -1,6 +1,6 @@
 <template>
   <div ref="container" class="parallax-container">
-    <Observer :callback="observerHandler" :options="{ rootMargin: '0px' }">
+    <Observer :callback="inView" :negative-callback="outOfView" :options="{ rootMargin: '0px' }">
       <div ref="image" class="parallax-image-container" :style="style"></div>
     </Observer>
   </div>
@@ -23,7 +23,7 @@ export default {
     },
     imageUrl: String,
     heightOffset: {
-      default: 400,
+      default: 200,
       type: Number
     }
   },
@@ -40,6 +40,7 @@ export default {
       initial: true,
       totalScroll: 0,
       initialScrollPos: 0,
+      eventOff: true,
       factor: 0,
       y: 0
     }
@@ -47,12 +48,10 @@ export default {
   mounted() {
     // this.onLoad();
     this.el = this.$refs.image
-    this.onResize();
-    window.addEventListener('scroll', this.scrollHandler)
+
     window.addEventListener('resize', this.onResize);
   },
   destroyed() {
-    window.removeEventListener('scroll', this.scrollHandler);
     window.removeEventListener('resize', this.onResize);
   },
   computed: {
@@ -72,61 +71,42 @@ export default {
   },
   watch: {
     bounds(newBounds) {
-      this.totalScroll = newBounds.height + window.innerHeight;
+      let offsetTop = getOffsetY(this.el);
+      offsetTop = offsetTop < this.windowHeight ? offsetTop : this.windowHeight;
+      this.totalScroll = this.$refs.container.clientHeight + offsetTop;
       this.direction = newBounds.bottom > newBounds.top ? 'up' : 'down';
-      this.initialScrollPos = window.scrollY - (window.innerHeight - newBounds.top);
-    },
-    factor(newFactor) {
-      if (this.direction === 'up') {
-        this.y = this.heightOffset * newFactor
-      } else {
-        this.y = this.heightOffset * (1 - newFactor)
-      }
     }
   },
   methods: {
 
     onResize() {
-      this.bounds = this.el.getBoundingClientRect()
+      this.windowHeight = window.innerHeight;
+      this.bounds = this.el.getBoundingClientRect();
     },
-    observerHandler(target, index, intersectionPoint, entry) {
+    inView(target, index, intersectionPoint, entry) {
       const { isIntersecting, boundingClientRect } = entry
-      // console.log(boundingClientRect);
       if (this.initial) {
         this.bounds = boundingClientRect
         this.current = window.scrollY;
         this.scrollHandler();
         this.initial = false;
       }
-
-      if (isIntersecting) {
-        console.log('in view');
-        this.inView(true);
-      } else if (!isIntersecting) {
-        console.log('out of view');
-        this.inView(false);
+      
+      if (intersectionPoint === 'top') {
+        this.initialScrollPos = window.scrollY;
+      } else {
+        this.initialScrollPos = window.scrollY - this.totalScroll;
       }
+      window.addEventListener('scroll', this.scrollHandler)
+      this.eventOff = false;
+      // console.log('in');
     },
-    inView(turnEventOn) {
-      // console.log(bounds);
-      if (turnEventOn && this.eventOff) {
-
-        this.eventOff = false;
-      } else if (!turnEventOn && !this.eventOff) {
-        this.eventOff = true;
-      }
-    },
-    setBoundsScroll(bounds) {
-      this.direction = bounds.bottom > bounds.top ? 'up' : 'down';
-      console.log(bounds);
-      this.initialScrollPos = window.scrollY - (window.innerHeight - bounds.top);
-      this.bounds = bounds;
+    outOfView() {
+      // console.log('out');
+      window.removeEventListener('scroll', this.scrollHandler);
+      this.eventOff = true;
     },
     scrollHandler() {
-      if (this.eventOff) {
-        return;
-      }
-
       this.target = window.scrollY;
       this.animate();
     },
@@ -150,9 +130,8 @@ export default {
       }
 
       const scrollDiff = this.decimalize(this.current - this.initialScrollPos);
-
       const factor = this.decimalize(scrollDiff / this.totalScroll);
-      // console.log(factor);
+
       if (factor > 1) {
         this.factor = 1;
       } else if (factor < 0) {
@@ -163,8 +142,13 @@ export default {
 
       this.updateAnimation(this.factor)
     },
-    updateAnimation() {
-      TweenLite.set(this.el, { y: -this.y, rotate: .00001 });
+    updateAnimation(factor) {
+      if (this.direction === 'up') {
+        this.y = this.heightOffset * factor
+      } else {
+        this.y = this.heightOffset * (1 - factor)
+      }
+      TweenLite.set(this.el, { y: -this.y, rotate: .001 });
     }
   },
 }
