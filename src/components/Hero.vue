@@ -20,11 +20,9 @@
 
 <script>
 import ParallaxContainer from '../micros/parallax/ParallaxContainer.vue';
-import ParallaxImage from '../micros/parallax/ParallaxImage.vue';
 export default {
   components: {
-    ParallaxContainer,
-    ParallaxImage
+    ParallaxContainer
   },
   props: {
     fields: Object

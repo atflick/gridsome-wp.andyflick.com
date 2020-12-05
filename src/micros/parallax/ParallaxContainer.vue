@@ -1,7 +1,9 @@
 <template>
-  <div ref="container" class="parallax-container">
-    <Observer :callback="inView" :negative-callback="outOfView" :options="{ rootMargin: '0px' }">
-      <div ref="image" class="parallax-image-container" :style="style"></div>
+  <div ref="container" class="parallax-container" :style="containerStyle">
+    <Observer :class="{ absolute: absolute }" :callback="inView" :negative-callback="outOfView" :options="{ rootMargin: '0px' }">
+      <div ref="image" class="parallax-container-image" :style="style">
+        <slot></slot>
+      </div>
     </Observer>
   </div>
 </template>
@@ -21,10 +23,21 @@ export default {
       default: 'down',
       type: String
     },
-    imageUrl: String,
+    imageUrl: {
+      default: '',
+      type: String
+    },
     heightOffset: {
       default: 200,
       type: Number
+    },
+    hideOverflow: {
+      default: true,
+      type: Boolean
+    },
+    absolute: {
+      default: true,
+      type: Boolean
     }
   },
   data() {
@@ -68,8 +81,13 @@ export default {
     },
     style() {
       return {
-        backgroundImage: `url(${this.imageUrl})`,
+        backgroundImage: this.imageUrl ? `url(${this.imageUrl})` : '',
         height: `calc(100% + ${this.heightOffset}px)`
+      }
+    },
+    containerStyle() {
+      return {
+        overflow: this.hideOverflow ? 'hidden' : 'visible'
       }
     }
   },
@@ -78,7 +96,7 @@ export default {
       let offsetTop = getOffsetY(this.el);
       offsetTop = offsetTop < this.windowHeight ? offsetTop : this.windowHeight;
       this.totalScroll = this.$refs.container.clientHeight + offsetTop;
-      this.direction = newBounds.bottom > newBounds.top ? 'up' : 'down';
+      // this.direction = newBounds.bottom > newBounds.top ? 'up' : 'down';
     }
   },
   methods: {
@@ -160,9 +178,16 @@ export default {
 
 <style lang="scss">
   .parallax-container {
+    position: relative;
     overflow: hidden;
 
-    .observer {
+    &-image {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    
+    .absolute {
       @include absolute(0, 0, 0, 0);
     }
   }

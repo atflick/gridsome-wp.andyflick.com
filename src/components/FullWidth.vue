@@ -1,41 +1,39 @@
 <template>
   <div class="full-width">
     <div ref="component" class="full-width-outer">
-      <div
-        ref="image"
+      <ParallaxContainer
         class="full-width-image"
-        :style="{ backgroundImage: `url(${fields.bgImage.url})`, height: `calc(100vh + ${this.offset}px)`}"
-        data-image
-      ></div>
-
-      <div ref="content" class="full-width-inner" data-content>
+        :imageUrl="fields.bgImage.url"
+        :hideOverflow="true"
+      />
+      <ParallaxContainer 
+        class="full-width-inner"
+        :hideOverflow="false"
+        direction="up"
+        :absolute="false"
+      >
         <div class="full-width-content">
           <h2 class="full-width-title -red-bg -white">{{ fields.title }}</h2>
           <p class="full-width-text -white">{{ fields.text }}</p>
           <a v-if="fields.link" :href="fields.link.url" class="button -white"><span>{{ fields.link.title }}</span></a>
-        </div>
-      </div>
+        </div>   
+      </ParallaxContainer>
     </div>
   </div>
 </template>
 
 <script>
-import { TweenLite } from 'gsap';
-import { getOffsetY } from '@/utils'
+import ParallaxContainer from '../micros/parallax/ParallaxContainer.vue';
+// import { getOffsetY } from '@/utils'
 
 export default {
+  name: 'FullWidth',
+  components: {
+    ParallaxContainer
+  },
   data() {
     return {
-      scrollY: 0,
-      visible: false,
-      currentPos: 0,
-      offset: 250,
-      scaleAmount: .15,
-      requestId: false,
-      prevScroll: null,
-      ease: .075,
-      requestId: false,
-      ticking: false
+
     }
   },
   computed: {
@@ -47,78 +45,9 @@ export default {
         bgImage: this.$attrs.fields.background_image
       }
     },
-    scrollYBottom() {
-      return this.scrollY + this.windowHeight
-    },
-    inViewScroll() {
-      return this.scrollY - this.componentOffset
-    },
-    translateFactor() {
-      return this.offset / this.windowHeight
-    },
-    scrollFactor() {
-      return this.inViewScroll / (this.componentHeight - this.windowHeight)
-    }
-  },
-  mounted() {
-    this.onResize()
-    window.addEventListener('resize', this.onResize)
-    window.addEventListener('scroll', this.onScroll)
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.onResize)
-    window.addEventListener('scroll', this.onScroll)
   },
   methods: {
-    parallax() {
-      // console.log(this.scrollFactor);
-      let target = 0;
-      let scale = 1 + this.scaleAmount
-      if (this.scrollFactor > 1) {
-        target = this.offset
-        scale = 1
-      } else if (this.scrollFactor > 0 && this.scrollFactor < 1) {
-        scale = Math.abs(((this.scrollFactor - 1) * this.scaleAmount) - 1)
-        target = this.inViewScroll - (this.translateFactor * this.inViewScroll)
-        this.visible = true
-      }
 
-      const dif = target - this.currentPos,
-            delta = Math.abs(dif) < 0.1 ? 0 : dif * this.ease
-
-      if (delta) {
-        this.currentPos += delta
-        this.requestId = requestAnimationFrame(this.parallax)
-      } else {
-        this.current = target
-        this.ticking = false;
-        cancelAnimationFrame(this.requestId)
-      }
-      // console.log('current:', this.currentPos, 'target:', target);
-
-      this.moveElement({y: this.currentPos, scale})
-    },
-    requestTick() {
-      if (!this.ticking) {
-        this.ticking = true
-        this.requestId = requestAnimationFrame(this.parallax)
-      }
-    },
-    moveElement(movement) {
-      TweenLite.set(this.$refs.image, movement)
-    },
-    onResize() {
-      this.componentOffset = getOffsetY(this.$refs.component) + 15
-      this.componentHeight = this.$refs.component.clientHeight
-      this.componentOffsetBottom = this.componentOffset + this.componentHeight
-      this.windowHeight = window.innerHeight
-    },
-    onScroll() {
-      this.scrollY = window.scrollY
-      // console.log('onscroll', this.scrollY);
-
-      this.requestTick()
-    }
   }
 }
 </script>
@@ -130,22 +59,38 @@ export default {
     @include content-constraint;
 
     &-outer {
-      padding-top: 50vh;
+          
+      // &::before,
+      // &::after {
+      //   content: '';
+      //   position: absolute;
+      //   z-index: 2;
+      //   left: 0;
+      //   right: 0;
+      //   height: 20vh;
+      //   background-image: linear-gradient(transparent, #fff);
+      // }
+
+      // &::before {
+      //   top: 0;
+      //   transform: rotate(180deg);
+      // }
+
+      // &::after {
+      //   bottom: 0;
+      // }
     }
 
     &-image {
-      top: -50px;
-      right: 0;
+      position: absolute;
+      top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      @include bg-pattern(absolute);
-      transition: linear .0s;
-
-      &.stuck {
-        position: fixed;
-      }
+      // transition: linear .0s;
     }
 
     &-inner {
@@ -154,12 +99,19 @@ export default {
     }
 
     &-content {
+      padding: 30px;
+      margin: 200px 0 0;
+      background-color: rgba(primary-color(gray), .9);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      height: 100vh;
       max-width: 550px;
+
+      @include from(7) {
+        padding: 50px;
+        // margin: 200px 0 100px;
+      }
     }
 
     &-text {
