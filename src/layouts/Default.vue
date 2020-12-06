@@ -42,8 +42,8 @@ export default {
   watch: {
     transitionComplete(from, to) {
       if (to) {
-        this.scroller.resizeRequest = 1;
-        this.updateScroller();
+        // this.scroller.resizeRequest = 1;
+        // this.updateScroller();
       }
     },
     $route(to, from) {

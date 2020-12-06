@@ -5,7 +5,8 @@
     <div class="home-hero-inner">
       <div class="home-hero-content">
         <div class="home-hero-title-animation">
-          <h1 class="-blue-bg">{{ fields.title }}</h1>
+          <SplitText :text="fields.title" name="transform-in" tag="h1" class="-blue-bg" />
+          <!-- <h1 class="-blue-bg">{{ fields.title }}</h1> -->
         </div>
         <p>{{ fields.text }}</p>
       </div>
@@ -17,10 +18,13 @@
 <script>
 import ParallaxContainer from '../micros/parallax/ParallaxContainer.vue';
 import ParallaxImage from '../micros/parallax/ParallaxImage.vue';
+import SplitText from '../micros/SplitText.vue';
+
 export default {
   components: {
     ParallaxContainer,
-    ParallaxImage
+    ParallaxImage,
+    SplitText
   },
   props: {
     fields: Object
@@ -88,13 +92,20 @@ export default {
   @keyframes transform-in {
     0% {
       transform: matrix(0.35,-0.10,-0.50,0.89,34,-11);
-      opacity: .1;
+      opacity: 0;
+    }
+    10% {
+      opacity: .8;
     }
 
     100% {
       transform: matrix(0, 0, 0, 0,3 0, 0);
       opacity: 1;
     }
+  }
+
+  .transform-in {
+    animation-name: transform-in;
   }
 
   @keyframes wipe {

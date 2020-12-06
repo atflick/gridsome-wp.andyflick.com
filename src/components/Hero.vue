@@ -10,7 +10,7 @@
 
     <div class="hero-inner">
       <div class="hero-content">
-        <h1 class="-blue-bg">{{ fields.title }}</h1>
+        <SplitText :text="fields.title" name="transform-in" tag="h1" class="-blue-bg" />
         <p :v-if="fields.text">{{ fields.text }}</p>
       </div>
     </div>
@@ -20,9 +20,13 @@
 
 <script>
 import ParallaxContainer from '../micros/parallax/ParallaxContainer.vue';
+import SplitText from '../micros/SplitText.vue';
+
 export default {
+  name: 'Hero',
   components: {
-    ParallaxContainer
+    ParallaxContainer,
+    SplitText
   },
   props: {
     fields: Object

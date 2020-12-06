@@ -1,5 +1,5 @@
 <template>
-  <div class="observer" ref="observeElement">
+  <div :is="tag" class="observer" ref="observeElement">
     <slot />
   </div>
 </template>
@@ -18,6 +18,9 @@ export default {
     },
     negativeCallback: {
       type: Function
+    },
+    tag: {
+      default: 'div'
     }
   },
   data() {
