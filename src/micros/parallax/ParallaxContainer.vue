@@ -185,7 +185,6 @@ export default {
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      transition: ease .5ms;
       -webkit-transform-style: preserve-3d;
       -webkit-backface-visibility: hidden;
     }
