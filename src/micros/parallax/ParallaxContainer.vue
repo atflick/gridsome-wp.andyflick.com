@@ -10,7 +10,7 @@
 
 <script>
 import Observer from '../Observer'
-import { getOffsetY } from '@/utils'
+import { getOffsetY, debounce } from '@/utils'
 import { TweenLite } from 'gsap';
 
 export default {
@@ -121,16 +121,17 @@ export default {
       }
       window.addEventListener('scroll', this.scrollHandler)
       this.eventOff = false;
-      // console.log('in');
     },
     outOfView() {
-      // console.log('out');
       window.removeEventListener('scroll', this.scrollHandler);
       this.eventOff = true;
     },
     scrollHandler() {
       this.target = window.scrollY;
-      this.animate();
+      if (!this.rafActive) {
+        this.rafActive = true;
+        this.animate();
+      }
     },
     decimalize(num, decimal = 2) {
       return parseFloat(num.toFixed(decimal));
@@ -139,11 +140,9 @@ export default {
       const diff = this.target - this.current;
       // `delta` is the value for adding to the `current` scroll position
       // If `diff < 0.1`, make `delta = 0`, so the animation would not be endless
-      const delta = Math.abs(diff) < 0.1 ? 0 : diff * this.ease;
-
+      const delta = Math.abs(diff) < .5 ? 0 : diff * this.ease;
       if (delta) {
         this.current += delta;
-        this.current = this.decimalize(this.current);
         this.rafId = requestAnimationFrame(this.animate);
       } else {
         this.current = this.target;
@@ -151,8 +150,8 @@ export default {
         cancelAnimationFrame(this.rafId);
       }
 
-      const scrollDiff = this.decimalize(this.current - this.initialScrollPos);
-      const factor = this.decimalize(scrollDiff / this.totalScroll);
+      const scrollDiff = this.current - this.initialScrollPos;
+      const factor = scrollDiff / this.totalScroll;
 
       if (factor > 1) {
         this.factor = 1;
@@ -170,7 +169,8 @@ export default {
       } else {
         this.y = this.heightOffset * (1 - factor)
       }
-      TweenLite.set(this.el, { y: -this.y, rotate: .001 });
+
+      TweenLite.set(this.el, { y: -this.y, rotate: .0001 });
     }
   },
 }
@@ -185,8 +185,11 @@ export default {
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      transition: ease .5ms;
+      -webkit-transform-style: preserve-3d;
+      -webkit-backface-visibility: hidden;
     }
-    
+
     .absolute {
       @include absolute(0, 0, 0, 0);
     }
