@@ -94,8 +94,6 @@ class WPSource {
 
       await this.createPostPages(actions);
       await this.createTaxonomyPages(actions);
-
-      console.log('finished?');
     });
 
   }
@@ -374,7 +372,7 @@ class WPSource {
         mkdirSyncRecursive(path.resolve(this.options.localAssetUrl + match[2]))
         this.downloadImage(downloadUrl, this.options.localAssetUrl, match[3])
 
-        return '/assets/images' + match[2] + match[3];
+        return '/assets/img/uploads' + match[2] + match[3];
       }
     }
   }

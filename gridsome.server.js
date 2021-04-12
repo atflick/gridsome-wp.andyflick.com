@@ -19,7 +19,7 @@ module.exports = function (api) {
 
   api.afterBuild(() => {
     const srcDir = path.resolve('.cache/assets/images');
-    const destDir = path.resolve('dist/assets/images');
+    const destDir = path.resolve('dist/assets/img/uploads');
                               
     // To copy a folder or file  
     fse.moveSync(srcDir, destDir, function (err) {

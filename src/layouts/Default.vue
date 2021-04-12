@@ -6,7 +6,7 @@
           <router-view  :key="$context.id"></router-view>
         </transition>
       </main>
-      <PageTransition :start="canvasStart" />
+      <!-- <PageTransition :start="canvasStart" /> -->
     <Footer/>
   </div>
 </template>
