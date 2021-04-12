@@ -370,7 +370,7 @@ class WPSource {
         const downloadUrl = this.options.baseUrl + '/app/uploads' + match[2] + match[3]
         console.log('Downloading from:', downloadUrl);
         mkdirSyncRecursive(path.resolve(this.options.localAssetUrl + match[2]))
-        this.downloadImage(downloadUrl, this.options.localAssetUrl, match[3])
+        this.downloadImage(downloadUrl, this.options.localAssetUrl + match[2], match[3])
 
         return '/assets/img/uploads' + match[2] + match[3];
       }
