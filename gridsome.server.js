@@ -6,6 +6,8 @@
 // To restart press CTRL + C in terminal and run `gridsome develop`
 const wpUrl = process.env.WORDPRESS_URL;
 const WPSource = require('./plugins/wp-source')
+const path = require('path')
+const fse = require('fs-extra')
 module.exports = function (api) {
 
   const WP = new WPSource(api, {
@@ -14,5 +16,19 @@ module.exports = function (api) {
     postTypes: ['post'],
     menuIds: [2]
   });
+
+  api.afterBuild(() => {
+    const srcDir = path.resolve('.cache/assets/images');
+    const destDir = path.resolve('dist/assets/images');
+                              
+    // To copy a folder or file  
+    fse.moveSync(srcDir, destDir, function (err) {
+      if (err) {
+        console.error(err);      
+      } else {
+        console.log("Copied all WP Images");
+      }
+    });
+  })
 
 }

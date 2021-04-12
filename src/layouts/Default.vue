@@ -2,10 +2,11 @@
   <div class="page-container" ref="pageContainer">
     <Header/>
       <main>
-        <transition :name="transitionName" mode="out-in" v-on:leave="leave" v-on:after-enter="enter" appear>
+        <transition :name="transitionName" mode="out-in" @beforeEnter="beforeEnter" @leave="leave" @after-enter="enter" appear>
           <router-view  :key="$context.id"></router-view>
         </transition>
       </main>
+      <PageTransition :start="canvasStart" />
     <Footer/>
   </div>
 </template>
@@ -20,18 +21,26 @@
 <script>
 import { EventBus } from '../event-bus';
 import Header from '~/components/Header.vue'
+import PageTransition from '~/components/PageTransition.vue'
 
 export default {
   components: {
-    Header
+    Header,
+    PageTransition
   },
   data() {
     return {
       transitionComplete: false,
-      transitionName: 'slide'
+      transitionName: 'slide',
+      canvasStart: false
     }
   },
   methods: {
+    beforeEnter() {
+      if (this.transitionName === 'canvas') {
+        // this.canvasStart = true;
+      }
+    },
     leave() {
       this.transitionComplete = true;
     },
@@ -50,7 +59,7 @@ export default {
       if (to.meta.routeId === 'Categories') {
         this.transitionName = 'categories';
       } else {
-        this.transitionName = 'slide';
+        this.transitionName = 'canvas';
       }
     }
   }

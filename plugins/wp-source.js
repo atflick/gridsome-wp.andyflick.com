@@ -1,5 +1,21 @@
 const axios = require('axios')
 const { mapKeys, isPlainObject, trimEnd, trimStart, camelCase, upperFirst } = require('lodash')
+const fs = require('fs')
+const path = require('path')
+const https = require('https')
+const http = require('http')
+const TMPDIR = ".cache/downloads";
+
+function mkdirSyncRecursive(absDirectory) {
+  const paths = absDirectory.replace(/\/$/, "").split("/");
+  paths.splice(0, 1);
+
+  let dirPath = "/";
+  paths.forEach((segment) => {
+      dirPath += segment + "/";
+      if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath);
+  });
+}
 
 class WPSource {
   constructor(api, options) {
@@ -14,10 +30,16 @@ class WPSource {
       typeName: options.typeName || 'WordPress',
       menuIds: options.menuIds || [],
       menuTypeName: options.menuTypeName || 'Menu',
-      postTypes: options.postTypes || ['post']
+      postTypes: options.postTypes || ['post'],
+      localAssetUrl: options.localAssetUrl || '.cache/assets/images'
     }
 
     this.routes = this.options.routes || {};
+
+    /* Create image directories */
+    mkdirSyncRecursive(path.resolve(this.options.localAssetUrl));
+    mkdirSyncRecursive(path.resolve(TMPDIR));
+    this.tmpCount = 0;
 
     this.restBases = { posts: {}, taxonomies: {} };
 
@@ -51,7 +73,7 @@ class WPSource {
       for (const page of pages.data) {
         const path = page.link.replace(this.options.baseUrl, ''),
               template = page.template === '' ? 'Default' :  this.convertTemplateName(page.template);
-
+        this.parseAcf(page.acf);
         actions.createPage({
           path,
           component: `./src/templates/${template}.vue`,
@@ -70,10 +92,12 @@ class WPSource {
         });
       }
 
-      this.createPostPages(actions);
-      this.createTaxonomyPages(actions);
+      await this.createPostPages(actions);
+      await this.createTaxonomyPages(actions);
 
+      console.log('finished?');
     });
+
   }
 
   async getMenus(actions) {
@@ -208,6 +232,7 @@ class WPSource {
 
       for (const post of data) {
         const url = post.link.replace(this.options.baseUrl, '');
+        this.parseAcf(post.acf);
         const postData = {
           id: post.id,
           date: post.date,
@@ -227,13 +252,13 @@ class WPSource {
     }
   }
 
-  createPostPages(actions) {
+  async createPostPages(actions) {
     for (const postType of this.options.postTypes) {
 
       for (const post of this.restBases.posts[postType].data) {
         const path = post.link.replace(this.options.baseUrl, ''),
               template = this.convertTemplateName(postType);
-
+        this.parseAcf(post.acf);
         actions.createPage({
           path,
           route: {
@@ -254,7 +279,7 @@ class WPSource {
     }
   }
 
-  createTaxonomyPages(actions) {
+  async createTaxonomyPages(actions) {
     for (let taxonomy in this.restBases.taxonomies) {
       taxonomy = this.restBases.taxonomies[taxonomy];
       for (const term of taxonomy.terms) {
@@ -318,6 +343,80 @@ class WPSource {
     str = str.toLowerCase();
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
+  parseAcf(obj) {
+    if (typeof obj === 'array') {
+      for (let k of obj) {
+        this.parseAcfCheck(obj[k])
+      }
+    } else {
+      for (let k in obj) {
+        const returnString = this.parseAcfCheck(obj[k])
+        if (typeof returnString === 'string') {
+          obj[k] = returnString
+        }
+      }
+    }
+  }
+
+  parseAcfCheck(item) {
+    const type = typeof item;
+    if (type === "object" || type === "array") {
+      this.parseAcf(item)
+    } else if (type === 'string') {
+      if (item.includes('/app/uploads')) {
+        const regex = new RegExp('(.*/app/uploads)(/\\d{4}/\\d{2}/)(.*)', 'g');
+        const match = regex.exec(item)
+        // console.log(match);
+        
+        const downloadUrl = this.options.baseUrl + '/app/uploads' + match[2] + match[3]
+        console.log('Downloading from:', downloadUrl);
+        mkdirSyncRecursive(path.resolve(this.options.localAssetUrl + match[2]))
+        this.downloadImage(downloadUrl, this.options.localAssetUrl, match[3])
+
+        return '/assets/images' + match[2] + match[3];
+      }
+    }
+  }
+
+  async downloadImage(url, destPath, fileName) {
+    const imagePath = path.resolve(destPath, fileName);
+    const encodedURI = encodeURI(url); 
+    const requester = url.includes('https') ? https : http;
+
+    try {
+        if (fs.existsSync(imagePath)) return;
+    } catch (err) {
+        console.log(err);
+    }
+
+    const tmpPath = path.resolve(TMPDIR, `${++this.tmpCount}.tmp`);
+
+    return new Promise(function(resolve, reject) {
+        const file = fs.createWriteStream(tmpPath);
+        requester
+            .get(encodedURI, (response) => {
+                response.pipe(file);
+                file.on("finish", () => {
+                    file.close();
+                    fs.rename(tmpPath, imagePath, resolve);
+                });
+            })
+            .on("error", (err) => {
+                console.error(err.message);
+                fs.unlinkSync(tmpPath); // Cleanup blank file
+                reject(err);
+            });
+    });
+  }
+  // download(url, path, callback) {
+  //   console.log('DOWNLOADING:', path);
+  //   request.head(url, (err, res, body) => {
+  //     request(url)
+  //       .pipe(fs.createWriteStream(path))
+  //       // .on('close', callback)
+  //   })
+  // }
 }
 
 module.exports = WPSource;
