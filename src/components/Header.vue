@@ -2,7 +2,7 @@
   <header class="site-header">
     <div class="site-header-logo">
       <g-link to="/">
-        <img src="../assets/images/logo-af-dark.svg" alt="AF Logo">
+        <g-image src="../assets/images/logo-af-dark.svg" alt="AF Logo" />
       </g-link>
     </div>
     <nav class="site-header-nav">

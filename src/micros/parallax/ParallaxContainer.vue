@@ -2,7 +2,9 @@
   <div ref="container" class="parallax-container" :style="containerStyle">
     <Observer :class="{ absolute: absolute }" :callback="inView" :negative-callback="outOfView" :options="{ rootMargin: '0px' }">
       <div ref="image" class="parallax-container-image" :style="style">
-        <slot></slot>
+        <slot><g-image :src="imageUrl" 
+                       :class="{ 'image-loaded': imageLoaded }" 
+                       @load="imageLoaded = true" /></slot>
       </div>
     </Observer>
   </div>
@@ -55,7 +57,8 @@ export default {
       initialScrollPos: 0,
       eventOff: true,
       factor: 0,
-      y: 0
+      y: 0,
+      imageLoaded: false
     }
   },
   mounted() {
@@ -81,7 +84,7 @@ export default {
     },
     style() {
       return {
-        backgroundImage: this.imageUrl ? `url(${this.imageUrl})` : '',
+        // backgroundImage: this.imageUrl ? `url(${this.imageUrl})` : '',
         height: `calc(100% + ${this.heightOffset}px)`
       }
     },
@@ -100,7 +103,9 @@ export default {
     }
   },
   methods: {
+    loadImage() {
 
+    },
     onResize() {
       this.windowHeight = window.innerHeight;
       this.bounds = this.el.getBoundingClientRect();
@@ -182,11 +187,23 @@ export default {
     overflow: hidden;
 
     &-image {
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      position: relative;
+      // background-size: cover;
+      // background-position: center;
+      // background-repeat: no-repeat;
       -webkit-transform-style: preserve-3d;
       -webkit-backface-visibility: hidden;
+
+      img {
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: .5s ease-in-out;
+
+        &.image-loaded {
+          opacity: 1;
+        }
+      }
     }
 
     .absolute {

@@ -19,8 +19,11 @@ function mkdirSyncRecursive(absDirectory) {
 
 class WPSource {
   constructor(api, options) {
+    
     console.log('LOADING');
     options = options === undefined ? {} : options;
+    
+    this.isProd = process.env.GRIDSOME_MODE === 'static';
 
     this.options = {
       baseUrl: options.baseUrl || '',
@@ -73,7 +76,11 @@ class WPSource {
       for (const page of pages.data) {
         const path = page.link.replace(this.options.baseUrl, ''),
               template = page.template === '' ? 'Default' :  this.convertTemplateName(page.template);
-        this.parseAcf(page.acf);
+              
+        if (this.isProd) {
+          this.parseAcf(page.acf);
+        }
+
         actions.createPage({
           path,
           component: `./src/templates/${template}.vue`,
@@ -230,7 +237,11 @@ class WPSource {
 
       for (const post of data) {
         const url = post.link.replace(this.options.baseUrl, '');
-        this.parseAcf(post.acf);
+
+        if (this.isProd) {
+          this.parseAcf(post.acf);
+        }
+
         const postData = {
           id: post.id,
           date: post.date,
@@ -256,7 +267,11 @@ class WPSource {
       for (const post of this.restBases.posts[postType].data) {
         const path = post.link.replace(this.options.baseUrl, ''),
               template = this.convertTemplateName(postType);
-        this.parseAcf(post.acf);
+        
+        if (this.isProd) {
+          this.parseAcf(post.acf);
+        }
+
         actions.createPage({
           path,
           route: {

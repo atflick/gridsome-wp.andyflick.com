@@ -59,7 +59,7 @@ export default {
       if (to.meta.routeId === 'Categories') {
         this.transitionName = 'categories';
       } else {
-        this.transitionName = 'canvas';
+        this.transitionName = 'fade';
       }
     }
   }
@@ -75,24 +75,47 @@ export default {
 
   .slide {
     &-leave-active {
-      transition: all .5s;
+      transition: all .3s;
       opacity: 1;
-      transform: translateX(0);
+      transform: translateY(0);
     }
 
     &-leave-to /* .slide-leave-active below version 2.1.8 */ {
       opacity: 0;
-      transform: translateX(-100%);
+      transform: translateY(-100%);
     }
 
     &-enter {
       opacity: 0;
-      transform: translateX(100%);
+      transform: translateY(100%);
     }
 
     &-enter-to {
       opacity: 1;
-      transform: translateX(0);
+      transform: translateY(0);
+    }
+
+    &-enter-active {
+      transition: all .3s;
+    }
+  }
+
+  .fade {
+    &-leave-active {
+      transition: all .5s;
+      opacity: 1;
+    }
+
+    &-leave-to /* .slide-leave-active below version 2.1.8 */ {
+      opacity: 0;
+    }
+
+    &-enter {
+      opacity: 0;
+    }
+
+    &-enter-to {
+      opacity: 1;
     }
 
     &-enter-active {

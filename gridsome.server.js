@@ -17,18 +17,20 @@ module.exports = function (api) {
     menuIds: [2]
   });
 
-  api.afterBuild(() => {
-    const srcDir = path.resolve('.cache/assets/images');
-    const destDir = path.resolve('dist/assets/img/uploads');
-                              
-    // To copy a folder or file  
-    fse.moveSync(srcDir, destDir, function (err) {
-      if (err) {
-        console.error(err);      
-      } else {
-        console.log("Copied all WP Images");
-      }
-    });
-  })
+  if (process.env.GRIDSOME_MODE === 'static') {
+    api.afterBuild(() => {
+      const srcDir = path.resolve('.cache/assets/images');
+      const destDir = path.resolve('dist/assets/img/uploads');
+                                
+      // To copy a folder or file  
+      fse.moveSync(srcDir, destDir, function (err) {
+        if (err) {
+          console.error(err);      
+        } else {
+          console.log("Copied all WP Images");
+        }
+      });
+    })
+  }
 
 }

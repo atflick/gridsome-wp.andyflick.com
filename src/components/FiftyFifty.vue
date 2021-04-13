@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="fifty-fifty-image">
-        <img :src="fields.image.url" :alt="fields.image.alt">
+        <g-image :src="fields.image.url" :alt="fields.image.alt" />
       </div>
     </div>
   </div>
