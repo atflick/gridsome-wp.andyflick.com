@@ -166,7 +166,8 @@ export default {
 
         &-bg {
           margin: 0 0 15px;
-
+          background: primary-color(white);
+          
           @include from(10) {
             position: relative;
             margin: 0 auto 15px;
@@ -180,8 +181,9 @@ export default {
               position: absolute;
               left: -2px;
               right: -2px;
-              height: calc(50% + 2px);
+              height: calc(100% + 4px);
               top: -2px;
+              border-radius: 50%;
               background: primary-color(white);
               transition: $te .3s;
             }
@@ -191,8 +193,9 @@ export default {
               position: absolute;
               left: -2px;
               right: -2px;
-              height: calc(50% + 2px);
+              height: calc(100% + 4px);
               bottom: -2px;
+              border-radius: 50%;
               background: primary-color(white);
               transition: $te .3s;
             }

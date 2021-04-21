@@ -25,6 +25,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    background: #fff;
 
     &-logo {
       padding: 5px 0;

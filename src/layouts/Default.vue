@@ -1,12 +1,14 @@
 <template>
   <div class="page-container" ref="pageContainer">
+    <BlobAnimation />
     <Header/>
-      <main>
-        <transition :name="transitionName" mode="out-in" @beforeEnter="beforeEnter" @leave="leave" @after-enter="enter" appear>
-          <router-view  :key="$context.id"></router-view>
-        </transition>
-      </main>
-      <!-- <PageTransition :start="canvasStart" /> -->
+    <main :class="{ glitching }">
+      <transition :name="transitionName" mode="out-in" @beforeEnter="beforeEnter" @leave="leave" @after-enter="enter" appear>
+        <router-view  :key="$context.id"></router-view>
+      </transition>
+    </main>
+      
+      <PageTransition />
     <Footer/>
   </div>
 </template>
@@ -31,13 +33,15 @@ export default {
   data() {
     return {
       transitionComplete: false,
-      transitionName: 'slide',
-      canvasStart: false
+      transitionName: 'fade',
+      canvasStart: false,
+      glitching: false
     }
   },
   methods: {
     beforeEnter() {
       if (this.transitionName === 'canvas') {
+        this.glitching = true
         // this.canvasStart = true;
       }
     },
@@ -49,11 +53,9 @@ export default {
     }
   },
   watch: {
-    transitionComplete(from, to) {
-      if (to) {
-        // this.scroller.resizeRequest = 1;
-        // this.updateScroller();
-      }
+    transitionComplete(val) {
+      console.log(val);
+      this.glitching = val
     },
     $route(to, from) {
       if (to.meta.routeId === 'Categories') {
@@ -71,6 +73,10 @@ export default {
   body {
     overflow-x: hidden;
     overflow-y: auto;
+  }
+
+  .glitching {
+    filter: url(#transmissionerror);
   }
 
   .slide {
