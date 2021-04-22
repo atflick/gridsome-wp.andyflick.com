@@ -2,11 +2,23 @@
   <div ref="container" class="parallax-container" :style="containerStyle">
     <Observer :class="{ absolute: absolute }" :callback="inView" :negative-callback="outOfView" :options="{ rootMargin: '0px' }">
       <div ref="image" class="parallax-container-image" :style="style">
-        <slot><g-image :src="imageUrl" 
-                       :class="{ 'image-loaded': imageLoaded }" 
-                       @load="imageLoaded = true" /></slot>
+        <slot>
+          <g-image 
+            :src="imageUrl" 
+              :class="{ 'image-loaded': imageLoaded }" 
+              @load="imageLoaded = true" />
+        </slot>
       </div>
     </Observer>
+    <svg height="0">
+      <defs>
+        <filter :id="`ripple-${guid}`" style="color-interpolation-filters:sRGB" x="-50%" y="-50%" width="200%" height="200%">
+        <feTurbulence baseFrequency="0.002 0.25"/>
+        <feColorMatrix result="result91" values="2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0.5"/>
+        <feDisplacementMap in="SourceGraphic" in2="result91" :scale="delta * 2" xChannelSelector="R"/>
+        </filter>
+      </defs>
+    </svg>
   </div>
 </template>
 
@@ -48,6 +60,7 @@ export default {
       bounds: {},
       windowHeight: 0,
       ease: .075,
+      delta: 0,
       current: 0,
       target: 0,
       rafId: undefined,
@@ -58,10 +71,12 @@ export default {
       eventOff: true,
       factor: 0,
       y: 0,
-      imageLoaded: false
+      imageLoaded: false,
+      guid: ''
     }
   },
   mounted() {
+    this.guid = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
     // this.onLoad();
     this.el = this.$refs.image
     if (process.isClient) {
@@ -85,7 +100,8 @@ export default {
     style() {
       return {
         // backgroundImage: this.imageUrl ? `url(${this.imageUrl})` : '',
-        height: `calc(100% + ${this.heightOffset}px)`
+        height: `calc(100% + ${this.heightOffset}px)`,
+        filter: `url(#ripple-${this.guid})`
       }
     },
     containerStyle() {
@@ -145,9 +161,10 @@ export default {
       const diff = this.target - this.current;
       // `delta` is the value for adding to the `current` scroll position
       // If `diff < 0.1`, make `delta = 0`, so the animation would not be endless
-      const delta = Math.abs(diff) < .5 ? 0 : diff * this.ease;
-      if (delta) {
-        this.current += delta;
+      this.delta = Math.abs(diff) < .1 ? 0 : diff * this.ease;
+
+      if (this.delta) {
+        this.current += this.delta;
         this.rafId = requestAnimationFrame(this.animate);
       } else {
         this.current = this.target;
@@ -193,6 +210,7 @@ export default {
       // background-repeat: no-repeat;
       -webkit-transform-style: preserve-3d;
       -webkit-backface-visibility: hidden;
+      // filter: url(#ripple);
 
       img {
         height: 100%;

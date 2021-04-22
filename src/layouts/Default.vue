@@ -1,6 +1,6 @@
 <template>
   <div class="page-container" ref="pageContainer">
-    <BlobAnimation />
+    <!-- <BlobAnimation /> -->
     <Header/>
     <main :class="{ glitching }">
       <transition :name="transitionName" mode="out-in" @beforeEnter="beforeEnter" @leave="leave" @after-enter="enter" appear>

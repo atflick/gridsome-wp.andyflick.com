@@ -7,19 +7,6 @@
             <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
             <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 250 -70"/>
           </filter>
-          
-          <!-- <filter id="transmissionerror">
-            <feColorMatrix type="saturate" values="0" in="SourceGraphic" result="colormatrix1" />
-            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" in="colormatrix1" result="colormatrix2" />
-            <feTurbulence ref="turbAnim" type="turbulence" baseFrequency="0.002 0.008" numOctaves="2" seed="5" stitchTiles="noStitch" result="turbulence">
-              <animate ref="bfAnim" attributeName="baseFrequency" from="0.002 0.008" to="0.002 0.01" dur="500ms" repeatCount="indefinite" />
-              <animate ref="ocAnim" attributeName="numOctaves" from="1" to="10" dur="750ms" repeatCount="indefinite" />
-              <animate ref="sdAnim" attributeName="seed" from="1" to="100" dur="10s" repeatCount="indefinite" />
-            </feTurbulence>
-            <feColorMatrix type="saturate" values="30" in="turbulence" result="colormatrix3" />
-            <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 100 -15" in="colormatrix3" result="colormatrix4" />
-            <feDisplacementMap in="colormatrix2" in2="colomatrix4" scale="15" xChannelSelector="R" yChannelSelector="A" result="displacementMap" />
-          </filter> -->
         
         </defs>
     </svg>
