@@ -24,14 +24,20 @@
 
 <script>
 export default {
-  computed: {
-    fields() {
-      return {
-        title: this.$attrs.fields.title,
-        text: this.$attrs.fields.text,
-        items: this.$attrs.fields.items
-      }
+  name: 'IconsFour',
+  props: {
+    fields: {
+      type: Object
     }
+  },
+  computed: {
+    // fields() {
+    //   return {
+    //     title: this.$attrs.fields.title,
+    //     text: this.$attrs.fields.text,
+    //     items: this.$attrs.fields.items
+    //   }
+    // }
   }
 }
 </script>
@@ -167,7 +173,7 @@ export default {
         &-bg {
           margin: 0 0 15px;
           background: primary-color(white);
-          
+
           @include from(10) {
             position: relative;
             margin: 0 auto 15px;

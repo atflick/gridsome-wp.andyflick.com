@@ -1,0 +1,101 @@
+.wp-editor {
+  padding: 20px;
+}
+
+.wysiwyg-content,
+.wp-editor {
+
+  // embeds (videos, etc)
+  .entry-content-asset {
+    margin-bottom: 30px;
+
+    @include from(7) {
+      margin-bottom: 45px;
+    }
+  }
+
+  // images
+  figure,
+  dl[id^='attachment'] {
+    display: inline-block;
+    position: relative;
+    margin: 0 0 20px;
+    max-width: 400px;
+
+    .wp-caption-text,
+    .wp-caption-dd {
+      @include rem(font-size, 14px);
+      font-style: italic;
+      line-height: (22 / 14);
+      padding: 13px 0 0;
+    }
+
+    &.alignright,
+    &.alignleft {
+
+      @include to(6) {
+        display: block;
+        max-width: none;
+        text-align: center;
+        margin: 20px 0;
+
+        .figure-image-wrapper,
+        .wp-caption-dt {
+          display: inline-block;
+          max-width: 400px;
+        }
+
+        .wp-caption-text,
+        .wp-caption-dd {
+          max-width: 400px;
+          text-align: left;
+          margin: 0 auto;
+        }
+      }
+    }
+
+    &.alignright {
+
+      @include from(7) {
+        float: right;
+        margin: 10px 0 20px 20px;
+      }
+
+      @include from(10) {
+        margin-left: 40px;
+      }
+    }
+
+    &.alignleft {
+
+      @include from(7) {
+        float: left;
+        margin: 10px 20px 20px 0;
+      }
+
+      @include from(10) {
+        margin-right: 40px;
+      }
+    }
+
+    &.alignnone,
+    &.aligncenter {
+      display: table;
+      max-width: 100%;
+      text-align: center;
+      margin: 40px auto;
+
+      .figure-image-wrapper,
+      .wp-caption-dt {
+        display: inline-block;
+      }
+
+      .wp-caption-text,
+      .wp-caption-dd {
+        display: table-caption;
+        caption-side: bottom;
+        text-align: left;
+      }
+    }
+  }
+}

@@ -52,6 +52,10 @@ export default {
     absolute: {
       default: true,
       type: Boolean
+    },
+    noFilter: {
+      default: true,
+      type: Boolean
     }
   },
   data() {
@@ -101,7 +105,7 @@ export default {
       return {
         // backgroundImage: this.imageUrl ? `url(${this.imageUrl})` : '',
         height: `calc(100% + ${this.heightOffset}px)`,
-        filter: `url(#ripple-${this.guid})`
+        filter: this.noFilter ? '' : `url(#ripple-${this.guid})`
       }
     },
     containerStyle() {
@@ -205,14 +209,13 @@ export default {
 
     &-image {
       position: relative;
-      // background-size: cover;
-      // background-position: center;
-      // background-repeat: no-repeat;
       -webkit-transform-style: preserve-3d;
-      -webkit-backface-visibility: hidden;
+      margin: 0 -50px;
+      // -webkit-backface-visibility: hidden;
       // filter: url(#ripple);
 
       img {
+        width: calc(100% + 50px);
         height: 100%;
         object-fit: cover;
         opacity: 0;

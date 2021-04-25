@@ -241,15 +241,17 @@ class WPSource {
         if (this.isProd) {
           this.parseAcf(post.acf);
         }
-
+        console.log(post);
         const postData = {
           id: post.id,
           date: post.date,
           title: post.title.rendered,
           url,
+          // fields: {...post},
           acf: {
             ...post.acf
-          }
+          },
+          seo: post.yoast_head
         }
 
         for (const taxonomy of taxonomies) {

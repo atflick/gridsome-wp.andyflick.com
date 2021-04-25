@@ -5,6 +5,7 @@
         class="full-width-image"
         :imageUrl="fields.bgImage.url"
         :hideOverflow="true"
+        :noFilter="false"
       />
       <ParallaxContainer 
         class="full-width-inner"

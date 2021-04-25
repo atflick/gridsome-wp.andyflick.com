@@ -17,7 +17,6 @@ function addStyleResource (rule) {
         path.resolve(__dirname, './src/assets/css/helpers/functions/**/*.scss'),
         path.resolve(__dirname, './src/assets/css/_colors.scss'),
         path.resolve(__dirname, './src/assets/css/_settings.scss'),
-        path.resolve(__dirname, './src/assets/css/_transitions.scss'),
       ],
     })
 }

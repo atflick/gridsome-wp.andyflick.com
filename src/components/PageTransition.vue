@@ -34,5 +34,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  .transition,
+  svg {
+    height: 0;
+  }
 </style>

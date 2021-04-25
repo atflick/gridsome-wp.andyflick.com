@@ -1,6 +1,11 @@
 <template>
   <div class="home-hero">
-    <ParallaxContainer class="home-hero-parallax-container" :factor=".4" direction="up" :imageUrl="fields.image.url" />
+    <ParallaxContainer 
+      class="home-hero-parallax-container" 
+      :factor=".4" direction="up" 
+      :imageUrl="fields.image.url"
+      :noFilter="false" 
+    />
 
     <div class="home-hero-inner">
       <div class="home-hero-content">

@@ -6,6 +6,7 @@
       direction="up"
       :imageUrl="fields.image.url"
       :v-if="fields.image"
+      :noFilter="false"
     />
 
     <div class="hero-inner">

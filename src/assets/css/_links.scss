@@ -42,6 +42,7 @@ a {
     transition: $te $ts;
   }
 
+  &.pill,
   &.button {
     padding: 10px 30px;
     position: relative;
@@ -104,5 +105,10 @@ a {
         color: primary-color(gray);
       }
     }
+  }
+
+  &.pill {
+    // border-radius: 6px;
+    padding: 2px 8px;
   }
 }
