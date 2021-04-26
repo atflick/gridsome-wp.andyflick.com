@@ -251,7 +251,7 @@ class WPSource {
           acf: {
             ...post.acf
           },
-          seo: post.yoast_head
+          seo: post.yoast_head || false
         }
 
         for (const taxonomy of taxonomies) {
@@ -287,7 +287,8 @@ class WPSource {
             title: post.title.rendered,
             fields: {
               ...post.acf
-            }
+            },
+            seo: post.yoast_head || false
           }
         });
       }

@@ -50,7 +50,7 @@ class CircleBlob {
   }
   
   animate() {
-    console.log('animate')
+    // console.log('animate')
 
     this.vm.tl.to(this.pos,
       {

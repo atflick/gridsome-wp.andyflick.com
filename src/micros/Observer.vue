@@ -50,13 +50,13 @@ export default {
   methods: {
     handler(entries, observer) {
       entries.forEach((entry, index) => {
-        console.log(entry);
+        // console.log(entry);
         const { target, intersectionRatio, isIntersecting } = entry
 
         if (!entry.rootBounds) {
           return
         }
-        
+
         const midPoint = entry.rootBounds.height / 2
 
         const intersectionPoint = entry.intersectionRect.y > midPoint ? 'top' : 'bottom'

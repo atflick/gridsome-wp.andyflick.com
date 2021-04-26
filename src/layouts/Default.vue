@@ -54,7 +54,7 @@ export default {
   },
   watch: {
     transitionComplete(val) {
-      console.log(val);
+      // console.log(val);
       this.glitching = val
     },
     $route(to, from) {

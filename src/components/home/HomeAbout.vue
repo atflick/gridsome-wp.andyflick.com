@@ -25,14 +25,14 @@ export default {
       window.addEventListener('mousemove', this.trackMouse);
     },
     trackMouse(event) {
-      console.log(event, window)
+      // console.log(event, window)
       const target = window,
             centerWidth = target.innerWidth / 2,
             centerHeight = target.innerHeight / 2,
             xPos = event.x - centerWidth,
             yPos = event.y - centerHeight,
             scale = 20;
-  console.log(xPos);
+  // console.log(xPos);
 
 
       this.positioning.x = xPos / scale;
