@@ -23,21 +23,21 @@ export default {
     categories: {
       type: Array
     },
-    style: {
+    displayStyle: {
       type: String,
       default: 'pills'
     }
   },
   computed: {
     listStyle() {
-      if (this.style === 'pills') {
+      if (this.displayStyle === 'pills') {
         return 'pills'
       } else {
         return ''
       }
     },
     linkStyle() {
-      if (this.style === 'pills') {
+      if (this.displayStyle === 'pills') {
         return 'pill'
       } else {
         return ''

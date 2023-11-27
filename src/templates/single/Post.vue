@@ -25,9 +25,35 @@ query ($id: ID) {
 <script>
 export default {
   metaInfo() {
+    const seo = unescape(this.$page.post.seo)
+    console.log(seo);
+    const r = new RegExp(/<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)/, 'g')
+    const headObject = {
+      meta: []
+    };
+    console.log(seo.matchAll(r));
+    [...seo.matchAll(r)].map((item) => {
+      console.log(item);
+      const [tag, tagName, attributes] = item;
+      if (tagName === 'meta') {
+        const attrRegex = new RegExp(/([\w-]*)(=")([^"]*)/, 'g')
+        console.log(attributes);
+        const metaObject = {};
+
+        [...attributes.matchAll(attrRegex)].forEach((match) => {
+          console.log(process.env.WORDPRESS_URL);
+          const content = match[3].replace(process.env.WORDPRESS_URL, 'https://www.andyflick.com')
+          metaObject[match[1]] = content
+        });
+
+        headObject.meta.push(metaObject)
+        // console.log([...attrMatches]);
+      }
+    })
+    console.log(headObject);
     return {
       title: this.$context.title,
-      seo: this.$page.post.seo
+      ...headObject
     }
   },
   computed: {
