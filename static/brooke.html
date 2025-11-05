@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brooke's Slime Parties - DC Metro's Premier Slime Party Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mint-green: #98E4D6;
+            --dark-mint: #7DD3C0;
+            --purple: #B19CD9;
+            --dark-purple: #9B7EBF;
+            --light-purple: #E8D5FF;
+            --coral: #FFB6C1;
+            --yellow: #FFE66D;
+            --white: #FFFFFF;
+            --text-dark: #2C3E50;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, var(--mint-green) 0%, var(--light-purple) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating Bubbles Animation */
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bubble:nth-child(1) { left: 10%; width: 40px; height: 40px; animation-delay: 0s; }
+        .bubble:nth-child(2) { left: 20%; width: 20px; height: 20px; animation-delay: 1s; }
+        .bubble:nth-child(3) { left: 35%; width: 60px; height: 60px; animation-delay: 2s; }
+        .bubble:nth-child(4) { left: 50%; width: 30px; height: 30px; animation-delay: 3s; }
+        .bubble:nth-child(5) { left: 70%; width: 50px; height: 50px; animation-delay: 4s; }
+        .bubble:nth-child(6) { left: 85%; width: 25px; height: 25px; animation-delay: 5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-10vh) rotate(180deg); }
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.5rem;
+            color: var(--white);
+            text-shadow: 3px 3px 0px var(--dark-purple);
+            margin-bottom: 0.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .motto {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            background: var(--yellow);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .location {
+            font-size: 1rem;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid var(--purple);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .service-description {
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Slime Types */
+        .slime-types {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 3px solid var(--mint-green);
+        }
+
+        .slime-types h2 {
+            text-align: center;
+            color: var(--text-dark);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .slime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .slime-item {
+            background: linear-gradient(45deg, var(--mint-green), var(--purple));
+            color: var(--white);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .slime-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Pricing */
+        .pricing-section {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            border: 3px solid var(--coral);
+        }
+
+        .pricing-title {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .pricing-details {
+            font-size: 1.5rem;
+            color: var(--dark-purple);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-includes {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--purple), var(--dark-purple));
+            color: var(--white);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, var(--dark-purple), var(--purple));
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.1);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Bubbles -->
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="logo">Brooke's Slime Parties</h1>
+        <div class="motto">Making Memories One Slime at a Time! ✨</div>
+        <div class="location">Serving Bethesda, MD & the DC Metro Area</div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h2 class="hero-title">🎉 The Ultimate Slime Party Experience! 🎉</h2>
+            <p class="hero-subtitle">Professional slime parties for kids and teens! I bring all the supplies, set up the fun, and clean up the mess - you just enjoy the stretchy, gooey good times!</p>
+        </section>
+
+        <!-- Services Grid -->
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🧪</div>
+                <h3 class="service-title">Slime Making</h3>
+                <p class="service-description">Learn to create amazing slimes with different textures, colors, and special effects. Each guest gets hands-on experience!</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3 class="service-title">Slime Decorating</h3>
+                <p class="service-description">Customize your slime with glitter, beads, colors, and fun add-ins to make it uniquely yours!</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🔬</div>
+                <h3 class="service-title">Slime Science</h3>
+                <p class="service-description">Discover the fascinating science behind slime! Learn about polymers and chemical reactions in a fun, engaging way.</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">💝</div>
+                <h3 class="service-title">Take-Home Fun</h3>
+                <p class="service-description">Every guest leaves with their own custom slime creation plus care instructions to keep the fun going!</p>
+            </div>
+        </div>
+
+        <!-- Slime Types -->
+        <section class="slime-types">
+            <h2>🌈 Amazing Slime Varieties We Make! 🌈</h2>
+            <div class="slime-grid">
+                <div class="slime-item">✨ Fluffy Slime</div>
+                <div class="slime-item">🧈 Butter Slime</div>
+                <div class="slime-item">💎 Clear Slime</div>
+                <div class="slime-item">⭐ Glitter Slime</div>
+                <div class="slime-item">☁️ Cloud Slime</div>
+                <div class="slime-item">🔵 Foam Bead Slime</div>
+                <div class="slime-item">🌟 Glow-in-the-Dark</div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="pricing-section">
+            <h2 class="pricing-title">💰 Simple, Fair Pricing</h2>
+            <div class="pricing-details">$20 per child • $100 minimum</div>
+            <div class="pricing-includes">
+                <strong>Includes:</strong> All materials • Professional setup • Fun activities • Complete cleanup • Take-home slime for everyone!
+            </div>
+            <p style="color: var(--text-dark); margin-bottom: 1.5rem;">Perfect for birthdays, school events, summer camps, and any celebration that needs extra fun!</p>
+            <span class="cta-button">Book Your Slime Party Today! 🎈</span>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <p>Ready to make your party slime-sational? Contact Brooke today!</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">📧 <a href="mailto:brookemflick@gmail.com">brookemflick@gmail.com</a> • 📍 Serving DC Metro Area</p>
+        <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.8;">I travel to your location - homes, venues, anywhere the party is!</p>
+    </footer>
+</body>
+</html>

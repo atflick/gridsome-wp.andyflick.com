@@ -1,6 +1,14 @@
 <template>
   <div class="calculator">
     <div class="calculator-controls">
+      <!-- <button class="btn">Add</button>
+      <button class="btn">Add</button> -->
+      <select v-model="operator" id="">
+        <option value="add">Add</option>
+        <option value="subtract">Subtract</option>
+      </select>
+    </div>
+    <div class="calculator-controls">
       <div class="calculator-controls-side">
         <a href="#" class="calculator-button" @click.prevent="ballsOnLeft = ballsOnLeft - 1">-</a>
         <div class="h1 -blue-bg -white calculator-controls-count">{{ ballsOnLeft }}</div>
@@ -33,21 +41,26 @@ export default {
     return {
       ballsOnLeft: 0,
       ballsOnRight: 1,
-      activeDrag: ''
+      activeDrag: '',
+      operator: 'add'
     }
   },
   computed: {
     total() {
-      return this.ballsOnLeft + this.ballsOnRight
+      if (this.operator === 'add') {
+        return this.ballsOnLeft + this.ballsOnRight
+
+      } else if (this.operator === 'subtract') {
+        return this.ballsOnLeft - this.ballsOnRight
+
+      }
     }
   },
   methods: {
     handleDragging(side) {
-      console.log(side);
       this.activeDrag = side
     },
     handleDrop(side) {
-      console.log(side);
 
       if (side === this.activeDrag) {
         return
